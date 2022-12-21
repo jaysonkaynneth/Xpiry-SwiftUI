@@ -16,6 +16,7 @@
 		967B6213293889290050CA3E /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B6212293889290050CA3E /* CustomColor.swift */; };
 		967B621B2938B3470050CA3E /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B621A2938B3470050CA3E /* SearchBarView.swift */; };
 		967B621D2938B3A40050CA3E /* DismissKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B621C2938B3A40050CA3E /* DismissKeyboard.swift */; };
+		969FD130295302210066078D /* CarBode in Frameworks */ = {isa = PBXBuildFile; productRef = 969FD12F295302210066078D /* CarBode */; };
 		96A8CE2E29405276000BA342 /* AddItemModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8CE2D29405276000BA342 /* AddItemModalView.swift */; };
 		96A8CE3029405287000BA342 /* EditItemModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8CE2F29405287000BA342 /* EditItemModalView.swift */; };
 		96A8CE322940529E000BA342 /* ScannerModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8CE312940529E000BA342 /* ScannerModalView.swift */; };
@@ -32,6 +33,7 @@
 		967B6212293889290050CA3E /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		967B621A2938B3470050CA3E /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		967B621C2938B3A40050CA3E /* DismissKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissKeyboard.swift; sourceTree = "<group>"; };
+		969FD131295306970066078D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		96A8CE2D29405276000BA342 /* AddItemModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemModalView.swift; sourceTree = "<group>"; };
 		96A8CE2F29405287000BA342 /* EditItemModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemModalView.swift; sourceTree = "<group>"; };
 		96A8CE312940529E000BA342 /* ScannerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModalView.swift; sourceTree = "<group>"; };
@@ -42,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				969FD130295302210066078D /* CarBode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +70,7 @@
 		964D9F332935C48D00AA9B4F /* Xpiry */ = {
 			isa = PBXGroup;
 			children = (
+				969FD131295306970066078D /* Info.plist */,
 				967B62142938A90A0050CA3E /* View */,
 				967B62162938A91E0050CA3E /* Model */,
 				967B62152938A9120050CA3E /* View Model */,
@@ -139,6 +143,9 @@
 			dependencies = (
 			);
 			name = Xpiry;
+			packageProductDependencies = (
+				969FD12F295302210066078D /* CarBode */,
+			);
 			productName = Xpiry;
 			productReference = 964D9F312935C48D00AA9B4F /* Xpiry.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +174,9 @@
 				Base,
 			);
 			mainGroup = 964D9F282935C48D00AA9B4F;
+			packageReferences = (
+				969FD12E295302210066078D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */,
+			);
 			productRefGroup = 964D9F322935C48D00AA9B4F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -334,6 +344,8 @@
 				DEVELOPMENT_TEAM = RZWUV85Y3A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Xpiry/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -363,6 +375,8 @@
 				DEVELOPMENT_TEAM = RZWUV85Y3A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Xpiry/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -403,6 +417,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		969FD12E295302210066078D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/heart/CarBode-Barcode-Scanner-For-SwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		969FD12F295302210066078D /* CarBode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 969FD12E295302210066078D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */;
+			productName = CarBode;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		964D9F3F2935C48E00AA9B4F /* Xpiry.xcdatamodeld */ = {

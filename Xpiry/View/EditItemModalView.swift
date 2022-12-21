@@ -175,6 +175,7 @@ struct EditItemModalView: View {
             }
             .padding(.bottom)
         }
+        .preferredColorScheme(.light)
         .padding(.top)
     }
 }

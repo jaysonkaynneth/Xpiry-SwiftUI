@@ -17,6 +17,8 @@ struct AddItemModalView: View {
     @State private var stock: String = ""
     @State private var reminder: String = ""
     
+    @State private var scanPresented = false
+    
     var body: some View {
         VStack {
             HStack(alignment: .top) {
@@ -37,13 +39,14 @@ struct AddItemModalView: View {
                 Spacer()
                 
                 Button {
-                    
+                    scanPresented.toggle()
                 } label: {
                     Image(systemName: "barcode.viewfinder")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 30, height: 30)
                 }
+                .fullScreenCover(isPresented: $scanPresented, content: ScannerModalView.init)
             }.padding(.horizontal)
             
             Button {
@@ -175,6 +178,7 @@ struct AddItemModalView: View {
             }
             .padding(.bottom)
         }
+        .preferredColorScheme(.light)
         .padding(.top)
     }
 }

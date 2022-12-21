@@ -32,11 +32,19 @@ struct ContentView: View {
                     let lowSearch = searchText.lowercased()
                     let lowProduct = item.name!.lowercased()
                     if lowProduct.contains(lowSearch){
+                        
                         ZStack {
-                            RoundedRectangle(cornerRadius: 15)
-                                .foregroundColor(.white)
-                                .shadow(radius: 5)
-                                .frame(height: 95)
+                            if Date() >= item.expiry! {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .foregroundColor(.red)
+                                    .shadow(radius: 5)
+                                    .frame(height: 95)
+                            } else {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .foregroundColor(.white)
+                                    .shadow(radius: 5)
+                                    .frame(height: 95)
+                            }
                             
                             HStack {
                                 Circle()
@@ -56,12 +64,21 @@ struct ContentView: View {
                                 print("Tapped cell")
                             itemPressed.toggle()
                         }.fullScreenCover(isPresented: $itemPressed, content: EditItemModalView.init)
-                    } else if searchText.isEmpty{
-                             ZStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .foregroundColor(.white)
-                            .shadow(radius: 5)
-                            .frame(height: 95)
+                        
+                    } else if searchText.isEmpty {
+                        
+                        ZStack {
+                            if Date() >= item.expiry!  {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .foregroundColor(.red)
+                                    .shadow(radius: 5)
+                                    .frame(height: 95)
+                            } else {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .foregroundColor(.white)
+                                    .shadow(radius: 5)
+                                    .frame(height: 95)
+                            }
                         
                         HStack {
                             Circle()
@@ -120,6 +137,7 @@ struct ContentView: View {
                     }
                 }
         }.ignoresSafeArea()
+        .preferredColorScheme(.light)
     }
     
     private func deleteItems(offsets: IndexSet) {
