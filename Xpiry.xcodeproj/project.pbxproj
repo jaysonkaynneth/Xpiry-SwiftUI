@@ -13,6 +13,12 @@
 		964D9F3C2935C48E00AA9B4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 964D9F3B2935C48E00AA9B4F /* Preview Assets.xcassets */; };
 		964D9F3E2935C48E00AA9B4F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D9F3D2935C48E00AA9B4F /* Persistence.swift */; };
 		964D9F412935C48E00AA9B4F /* Xpiry.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 964D9F3F2935C48E00AA9B4F /* Xpiry.xcdatamodeld */; };
+		967B6213293889290050CA3E /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B6212293889290050CA3E /* CustomColor.swift */; };
+		967B621B2938B3470050CA3E /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B621A2938B3470050CA3E /* SearchBarView.swift */; };
+		967B621D2938B3A40050CA3E /* DismissKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B621C2938B3A40050CA3E /* DismissKeyboard.swift */; };
+		96A8CE2E29405276000BA342 /* AddItemModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8CE2D29405276000BA342 /* AddItemModalView.swift */; };
+		96A8CE3029405287000BA342 /* EditItemModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8CE2F29405287000BA342 /* EditItemModalView.swift */; };
+		96A8CE322940529E000BA342 /* ScannerModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8CE312940529E000BA342 /* ScannerModalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +29,12 @@
 		964D9F3B2935C48E00AA9B4F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		964D9F3D2935C48E00AA9B4F /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		964D9F402935C48E00AA9B4F /* Xpiry.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xpiry.xcdatamodel; sourceTree = "<group>"; };
+		967B6212293889290050CA3E /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
+		967B621A2938B3470050CA3E /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		967B621C2938B3A40050CA3E /* DismissKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissKeyboard.swift; sourceTree = "<group>"; };
+		96A8CE2D29405276000BA342 /* AddItemModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemModalView.swift; sourceTree = "<group>"; };
+		96A8CE2F29405287000BA342 /* EditItemModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemModalView.swift; sourceTree = "<group>"; };
+		96A8CE312940529E000BA342 /* ScannerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,11 +67,13 @@
 		964D9F332935C48D00AA9B4F /* Xpiry */ = {
 			isa = PBXGroup;
 			children = (
-				964D9F342935C48D00AA9B4F /* XpiryApp.swift */,
-				964D9F362935C48D00AA9B4F /* ContentView.swift */,
+				967B62142938A90A0050CA3E /* View */,
+				967B62162938A91E0050CA3E /* Model */,
+				967B62152938A9120050CA3E /* View Model */,
+				967B62172938A9B00050CA3E /* Extension */,
 				964D9F382935C48E00AA9B4F /* Assets.xcassets */,
+				964D9F342935C48D00AA9B4F /* XpiryApp.swift */,
 				964D9F3D2935C48E00AA9B4F /* Persistence.swift */,
-				964D9F3F2935C48E00AA9B4F /* Xpiry.xcdatamodeld */,
 				964D9F3A2935C48E00AA9B4F /* Preview Content */,
 			);
 			path = Xpiry;
@@ -71,6 +85,42 @@
 				964D9F3B2935C48E00AA9B4F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		967B62142938A90A0050CA3E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				964D9F362935C48D00AA9B4F /* ContentView.swift */,
+				96A8CE2D29405276000BA342 /* AddItemModalView.swift */,
+				96A8CE2F29405287000BA342 /* EditItemModalView.swift */,
+				96A8CE312940529E000BA342 /* ScannerModalView.swift */,
+				967B621A2938B3470050CA3E /* SearchBarView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		967B62152938A9120050CA3E /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		967B62162938A91E0050CA3E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				964D9F3F2935C48E00AA9B4F /* Xpiry.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		967B62172938A9B00050CA3E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				967B6212293889290050CA3E /* CustomColor.swift */,
+				967B621C2938B3A40050CA3E /* DismissKeyboard.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,6 +195,12 @@
 			files = (
 				964D9F3E2935C48E00AA9B4F /* Persistence.swift in Sources */,
 				964D9F372935C48D00AA9B4F /* ContentView.swift in Sources */,
+				96A8CE322940529E000BA342 /* ScannerModalView.swift in Sources */,
+				967B6213293889290050CA3E /* CustomColor.swift in Sources */,
+				967B621D2938B3A40050CA3E /* DismissKeyboard.swift in Sources */,
+				967B621B2938B3470050CA3E /* SearchBarView.swift in Sources */,
+				96A8CE3029405287000BA342 /* EditItemModalView.swift in Sources */,
+				96A8CE2E29405276000BA342 /* AddItemModalView.swift in Sources */,
 				964D9F412935C48E00AA9B4F /* Xpiry.xcdatamodeld in Sources */,
 				964D9F352935C48D00AA9B4F /* XpiryApp.swift in Sources */,
 			);
