@@ -13,7 +13,7 @@ struct XpiryApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
                 .environment(\.managedObjectContext, persistence.container.viewContext)
         }
     }

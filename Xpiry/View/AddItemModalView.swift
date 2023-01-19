@@ -1,138 +1,151 @@
 //
-//  AddItemModalView.swift
+//  AddItemView.swift
 //  Xpiry
 //
-//  Created by Jason Kenneth on 07/12/22.
+//  Created by Jason Kenneth on 22/12/22.
 //
 
 import SwiftUI
 import Combine
+import PhotosUI
 
 struct AddItemModalView: View {
     @Environment(\.presentationMode) var presentationMode
-    
     @Environment(\.managedObjectContext) var moc
+    
     @State private var name: String = ""
     @State private var expiryDate = Date.now
     @State private var stock: String = ""
     @State private var reminder: String = ""
-    
     @State private var scanPresented = false
+    @State private var image: Data = .init(count: 0)
+    @State private var selectedItems: [PhotosPickerItem] = []
+    @State private var overlay = false
     
     var body: some View {
-        VStack {
-            HStack(alignment: .top) {
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: {
-                    Text("Back")
-                }
-                
+        ZStack {
+            VStack {
+                HStack(alignment: .top) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Text("Back")
+                    }
                     Spacer()
-                
-                Circle()
-                    .strokeBorder(.black)
-                    .frame(width: 130, height: 130)
-                    .foregroundColor(.clear)
-                    .padding(.horizontal)
-                
-                Spacer()
-                
-                Button {
-                    scanPresented.toggle()
-                } label: {
-                    Image(systemName: "barcode.viewfinder")
-                        .resizable()
-                        .scaledToFit()
+                    PhotosPicker(selection: $selectedItems,
+                                 maxSelectionCount: 1,
+                                 matching: .images) {
+                        if selectedItems.count != 0 {
+                            if let data = image, let uiImage = UIImage(data: data) {
+                                Image(uiImage: uiImage)
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .frame(width: 130, height: 130)
+                                    .cornerRadius(8)
+                                    .shadow(radius: 5)
+                                    .clipShape(Circle())
+                                    .overlay(
+                                      Circle()
+                                          .strokeBorder(.black)
+                                    )
+                            }
+                        } else {
+                            Image(systemName: "photo.circle")
+                                .resizable()
+                                .frame(width: 130, height: 130)
+                                .cornerRadius(8)
+                                .shadow(radius: 5)
+                                .foregroundColor(.gray)
+                                .clipShape(Circle())
+                                .overlay(
+                                  Circle()
+                                      .strokeBorder(.black)
+                                )
+                            
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    Rectangle()
                         .frame(width: 30, height: 30)
-                }
-                .fullScreenCover(isPresented: $scanPresented, content: ScannerModalView.init)
-            }.padding(.horizontal)
-            
-            Button {
+                        .foregroundColor(.clear)
+                        .padding(.leading)
+                }.padding(.horizontal)
                 
-            } label: {
-                Text("Add an Image")
-                    .underline()
-                    .font(.system(size: 18, design: .rounded))
-            }
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Product Name")
-                        .font(.system(size: 18, design: .rounded))
-                        .bold()
-                        .padding(.bottom, 10)
-                    TextField("", text: $name)
-                        .padding(.leading, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .strokeBorder(.black)
-                                .foregroundColor(.clear)
-                                .frame(height: 35)
-                        )
+                .onChange(of: selectedItems) { new in
+                    guard let items = selectedItems.first else { return
+                        
+                    }
+                    
+                    items.loadTransferable(type: Data.self) { result in
+                        switch result {
+                        case .success(let data):
+                            if let data = data {
+                                self.image = data
+                            } else {
+                                print("No data :(")
+                            }
+                        case .failure(let error):
+                            fatalError("\(error)")
+                        }
+                    }
+                    
                 }
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.top)
-            
-            HStack {
-                VStack(alignment: .leading) {
-                    DatePicker(selection: $expiryDate, displayedComponents: .date) {
-                        Text("Expiry Date")
+                
+                HStack {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Product Name")
+                                .font(.system(size: 18, design: .rounded))
+                                .bold()
+                                .padding(.bottom, 10)
+                            Button {
+                                overlay.toggle()
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .padding(.bottom, 10)
+                            }
+                         
+                        }
+                        TextField("", text: $name)
+                            .padding(.leading, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(.black)
+                                    .foregroundColor(.clear)
+                                    .frame(height: 35)
+                            )
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top)
+                
+                HStack {
+                        DatePicker(selection: $expiryDate, displayedComponents: .date) {
+                            Text("Expiry Date")
+                                .font(.system(size: 18, design: .rounded))
+                                .bold()
+                        }
+                }.padding()
+                
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Stock")
                             .font(.system(size: 18, design: .rounded))
                             .bold()
-                    }
-                }
-                Spacer()
-            }.padding()
-            
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Stock")
-                        .font(.system(size: 18, design: .rounded))
-                        .bold()
-                        .padding(.bottom, 10)
-                    
-                    TextField("", text: $stock)
-                        .keyboardType(.numberPad)
-                        .onReceive(Just(stock)) { input in
-                            let filtered = input.filter { "0123456789".contains($0) }
-                            if filtered != input {
-                                self.stock = filtered
-                            }
-                        }
-                        .frame(width: 80)
-                        .fixedSize(horizontal: true, vertical: false)
-                        .padding(.leading, 10)
-                        .padding(.trailing, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .strokeBorder(.black)
-                                .foregroundColor(.clear)
-                                .frame(height: 35)
-                        )
-                }
-                Spacer()
-            }.padding(.horizontal)
-            
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Reminder")
-                        .font(.system(size: 18, design: .rounded))
-                        .bold()
-                        .padding(.bottom, 10)
-                    
-                    HStack {
-                        TextField("", text: $reminder)
+                            .padding(.bottom, 10)
+                        
+                        TextField("", text: $stock)
                             .keyboardType(.numberPad)
-                            .onReceive(Just(reminder)) { input in
+                            .onReceive(Just(stock)) { input in
                                 let filtered = input.filter { "0123456789".contains($0) }
                                 if filtered != input {
-                                    self.reminder = filtered
+                                    self.stock = filtered
                                 }
                             }
-                            .frame(width: 40)
+                            .frame(width: 80)
                             .fixedSize(horizontal: true, vertical: false)
                             .padding(.leading, 10)
                             .padding(.trailing, 10)
@@ -142,44 +155,95 @@ struct AddItemModalView: View {
                                     .foregroundColor(.clear)
                                     .frame(height: 35)
                             )
-                        
-                        Text("Day(s) before expiring")
-                            .font(.system(size: 18, design: .rounded))
                     }
+                    Spacer()
+                }.padding(.horizontal)
+                
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Reminder")
+                            .font(.system(size: 18, design: .rounded))
+                            .bold()
+                            .padding(.bottom, 10)
+                        
+                        HStack {
+                            TextField("", text: $reminder)
+                                .keyboardType(.numberPad)
+                                .onReceive(Just(reminder)) { input in
+                                    let filtered = input.filter { "0123456789".contains($0) }
+                                    if filtered != input {
+                                        self.reminder = filtered
+                                    }
+                                }
+                                .frame(width: 40)
+                                .fixedSize(horizontal: true, vertical: false)
+                                .padding(.leading, 10)
+                                .padding(.trailing, 10)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .strokeBorder(.black)
+                                        .foregroundColor(.clear)
+                                        .frame(height: 35)
+                                )
+                            
+                            Text("Day(s) before expiring")
+                                .font(.system(size: 18, design: .rounded))
+                        }
+                    }
+                    Spacer()
                 }
-                Spacer()
+                .padding(.top)
+                .padding(.horizontal)
+                
+                   Spacer()
+                
+                    Button {
+                        let product = Item(context: moc)
+                        product.name = (name)
+                        product.expiry = (expiryDate)
+                        product.image = (image)
+                        product.stock = Int16(stock) ?? Int16("")!
+                        product.reminder = Int16(reminder) ?? Int16("")!
+                        
+                        presentationMode.wrappedValue.dismiss()
+                        
+                        try! moc.save()
+                        
+                        print(product.name!)
+                        print(product.expiry!)
+                        print(product.stock)
+                        print(product.reminder)
+                        
+//                        self.name = ""
+                        self.image.count = 0
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 35)
+                                .frame(width: 200, height: 60)
+                            
+                            Text("Save")
+                                .font(.system(size: 18, design: .rounded))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .padding()
+                    .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty || image.isEmpty)
+            }.padding(.top)
+        }  .overlay(secretOverlay)
+            .onTapGesture {
+                self.endTextEditing()
             }
-            .padding(.top)
-            .padding(.horizontal)
-            
-            Spacer()
-            
-            Button {
-                let item = Item(context: moc)
-                item.name = (name)
-                item.expiry = (expiryDate)
-                item.stock = Int16(stock) ?? Int16("")!
-                item.reminder = Int16(reminder) ?? Int16("")!
-                presentationMode.wrappedValue.dismiss()
-                try? moc.save()
-                print(item.name!)
-                print(item.expiry!)
-                print(item.stock)
-                print(item.reminder)
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 35)
-                        .frame(width: 200, height: 60)
-                    
-                    Text("Save")
-                        .font(.system(size: 18, design: .rounded))
-                        .foregroundColor(.white)
+    }
+    
+    
+    @ViewBuilder private var secretOverlay: some View {
+        ZStack{
+            if overlay {
+                OverlayView().onTapGesture {
+                    overlay.toggle()
                 }
             }
-            .padding(.bottom)
         }
-        .preferredColorScheme(.light)
-        .padding(.top)
     }
 }
 
