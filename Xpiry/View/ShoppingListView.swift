@@ -13,7 +13,7 @@ struct ShoppingListView: View {
     @State private var showModal = false
     @State private var tapped = false
     @State private var searchText = ""
-    @State private var completeType = 0
+    @State private var completeType = "All"
     
     var body: some View {
             VStack {
@@ -44,42 +44,65 @@ struct ShoppingListView: View {
                     }.padding(.bottom)
                         .padding(.trailing)
                     
+                    if completeType == "All" {
                         SearchBarView(searchText: $searchText, containerText: "Find Items")
                             .offset(y:40)
                             .padding()
+                    } else {
+                       
+                    }
                 }
                 
                 Picker("What is your favorite color?", selection: $completeType) {
-                    Text("All").tag(0)
-                    Text("Done").tag(1)
-                    Text("Pending").tag(2)
+                    Text("All").tag("All")
+                    Text("Done").tag("Done")
+                    Text("Pending").tag("Pending")
                 }
                 .padding()
                 .pickerStyle(.segmented)
                 
-                if completeType == 0 {
+                if completeType == "All" {
                     List {
                         ForEach(shoppingItems) { sItem in
-                            HStack{
-                                Text(sItem.name ?? "no feedback")
-                                Spacer()
-                                Text(String(sItem.stock))
-                                Button {
-                                    sItem.done.toggle()
-                                    try? moc.save()
-                                } label: {
-                                    Image(systemName: sItem.done ? "checkmark" : "")
-                                        .foregroundColor(Color(red: 251/255, green: 80/255, blue: 18/255))
+                            let lowSearch = searchText.lowercased()
+                            let lowProduct = sItem.name!.lowercased()
+                            if lowProduct.contains(lowSearch) {
+                                
+                                HStack{
+                                    Text(sItem.name ?? "no feedback")
+                                    Spacer()
+                                    Text(String(sItem.stock))
+                                    Button {
+                                        sItem.done.toggle()
+                                        try? moc.save()
+                                    } label: {
+                                        Image(systemName: sItem.done ? "checkmark" : "")
+                                            .foregroundColor(Color(red: 251/255, green: 80/255, blue: 18/255))
+                                    }
+                                    
                                 }
                                 
+                            } else if searchText.isEmpty {
+                                
+                                HStack{
+                                    Text(sItem.name ?? "no feedback")
+                                    Spacer()
+                                    Text(String(sItem.stock))
+                                    Button {
+                                        sItem.done.toggle()
+                                        try? moc.save()
+                                    } label: {
+                                        Image(systemName: sItem.done ? "checkmark" : "")
+                                            .foregroundColor(Color(red: 251/255, green: 80/255, blue: 18/255))
+                                    }
+                                }
                             }
-                            
                         }.onDelete(perform: deleteItems)
          
                     }.listStyle(.inset)
                         .padding(.top, 25)
                     
-                } else if completeType == 1 {
+                } else if completeType == "Done" {
                     List {
                         ForEach(shoppingItems.filter {
                             $0.done == true
@@ -92,7 +115,7 @@ struct ShoppingListView: View {
                                     sItem.done.toggle()
                                     try? moc.save()
                                 } label: {
-                                    Image(systemName: sItem.done ? "checkmark" : "")
+                                    Image(systemName: sItem.done ? "checkmark" : " ")
                                         .foregroundColor(Color(red: 251/255, green: 80/255, blue: 18/255))
                                 }
                                 

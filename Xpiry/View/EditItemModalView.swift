@@ -12,7 +12,6 @@ import PhotosUI
 struct EditItemModalView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var items: FetchedResults<Item>
     
     @State private var name: String = ""
     @State private var expiryDate = Date.now
@@ -22,7 +21,10 @@ struct EditItemModalView: View {
     @State private var image: Data = .init(count: 0)
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var overlay = false
+    @State private var refresh = UUID()
+    @State private var showTabBar = false
     
+    let item: Item
     
     var body: some View {
         ZStack {
@@ -30,41 +32,22 @@ struct EditItemModalView: View {
                 HStack(alignment: .top) {
                     Button {
                         presentationMode.wrappedValue.dismiss()
+                        showTabBar.toggle()
                     } label: {
                         Text("Back")
                     }
                     Spacer()
-                    PhotosPicker(selection: $selectedItems,
-                                 maxSelectionCount: 1,
-                                 matching: .images) {
-                        if selectedItems.count != 0 {
-                            if let data = image, let uiImage = UIImage(data: data) {
-                                Image(uiImage: uiImage)
-                                    .renderingMode(.original)
-                                    .resizable()
-                                    .frame(width: 130, height: 130)
-                                    .cornerRadius(8)
-                                    .shadow(radius: 5)
-                                    .clipShape(Circle())
-                                    .overlay(
-                                        Circle()
-                                            .strokeBorder(.black)
-                                    )
-                            }
-                        } else {
-                            Image(systemName: "photo.circle")
+            
+                            Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                .renderingMode(.original)
                                 .resizable()
                                 .frame(width: 130, height: 130)
-                                .cornerRadius(8)
-                                .shadow(radius: 5)
-                                .foregroundColor(.gray)
                                 .clipShape(Circle())
                                 .overlay(
                                     Circle()
                                         .strokeBorder(.black)
                                 )
-                        }
-                    }
+                   
                     
                     Spacer()
                     
@@ -101,24 +84,22 @@ struct EditItemModalView: View {
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .padding(.bottom, 10)
-                            Button {
-                                overlay.toggle()
-                            } label: {
-                                Image(systemName: "info.circle")
-                                    .padding(.bottom, 10)
-                            }
-                            
                         }
-                        
-                        TextField("", text: $name)
-                            .disabled(true)
-                            .padding(.leading, 10)
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(.black)
-                                    .foregroundColor(.clear)
-                                    .frame(height: 35)
-                            )
+                        ZStack {
+                            TextField("", text: $name)
+                                .disabled(true)
+                                .padding(.leading, 10)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .strokeBorder(.black)
+                                        .foregroundColor(.clear)
+                                        .frame(height: 35)
+                                )
+                            HStack {
+                                Text(item.name!)
+                                Spacer()
+                            }.padding(.leading)
+                        }
                     }
                     Spacer()
                 }
@@ -126,12 +107,19 @@ struct EditItemModalView: View {
                 .padding(.top)
                 
                 HStack {
-                    DatePicker(selection: $expiryDate, displayedComponents: .date) {
-                        Text("Expiry Date")
-                            .font(.system(size: 18, design: .rounded))
-                            .bold()
-                    }.disabled(true)
-                    
+                    ZStack {
+                        HStack {
+                            Spacer()
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 120, height: 30)
+                                .foregroundColor(Color(red: 230/255, green: 232/255, blue: 230/255))
+                        }
+                        DatePicker(selection: $expiryDate, displayedComponents: .date) {
+                            Text("Expiry Date")
+                                .font(.system(size: 18, design: .rounded))
+                                .bold()
+                        }.disabled(true)
+                    }
                     Spacer()
                 }.padding()
                 
@@ -141,26 +129,28 @@ struct EditItemModalView: View {
                             .font(.system(size: 18, design: .rounded))
                             .bold()
                             .padding(.bottom, 10)
-                        
-                        TextField("", text: $stock)
-                            .disabled(true)
-                            .keyboardType(.numberPad)
-                            .onReceive(Just(stock)) { input in
-                                let filtered = input.filter { "0123456789".contains($0) }
-                                if filtered != input {
-                                    self.stock = filtered
-                                }
-                            }
-                            .frame(width: 80)
-                            .fixedSize(horizontal: true, vertical: false)
-                            .padding(.leading, 10)
-                            .padding(.trailing, 10)
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(.black)
-                                    .foregroundColor(.clear)
-                                    .frame(height: 35)
-                            )
+                        ZStack {
+                                TextField("", text: $stock)
+                                    .disabled(true)
+                                    .keyboardType(.numberPad)
+                                    .onReceive(Just(stock)) { input in
+                                        let filtered = input.filter { "0123456789".contains($0) }
+                                        if filtered != input {
+                                            self.stock = filtered
+                                        }
+                                    }
+                                    .frame(width: 80)
+                                    .fixedSize(horizontal: true, vertical: false)
+                                    .padding(.leading, 10)
+                                    .padding(.trailing, 10)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .strokeBorder(.black)
+                                            .foregroundColor(.clear)
+                                            .frame(height: 35)
+                                    )
+                            Text(String(item.stock))
+                        }
                     }
                     Spacer()
                 }.padding(.horizontal)
@@ -173,6 +163,7 @@ struct EditItemModalView: View {
                             .padding(.bottom, 10)
                         
                         HStack {
+                            ZStack {
                             TextField("", text: $reminder)
                                 .disabled(true)
                                 .keyboardType(.numberPad)
@@ -192,7 +183,8 @@ struct EditItemModalView: View {
                                         .foregroundColor(.clear)
                                         .frame(height: 35)
                                 )
-                            
+                                Text(String(item.reminder))
+                        }
                             Text("Day(s) before expiring")
                                 .font(.system(size: 18, design: .rounded))
                         }
@@ -207,16 +199,14 @@ struct EditItemModalView: View {
                     Button {
                         let product = Item(context: moc)
                         
-                        product.stock = Int16(stock) ?? Int16("")!
-
+                        item.stock -= 1
+                        
                         
                         presentationMode.wrappedValue.dismiss()
                         
                         try! moc.save()
-        
+                        
                         print(product.stock)
-                
-                        self.image.count = 0
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 35)
@@ -231,16 +221,22 @@ struct EditItemModalView: View {
                     Spacer()
                     Button {
                         let product = Item(context: moc)
-                        
-                        product.stock = Int16(stock) ?? Int16("")!
 
+                     
+                        product.expiry = item.expiry
+                        product.image = item.image
+                        product.stock = item.stock
+                        product.reminder = item.reminder
+                        
                         presentationMode.wrappedValue.dismiss()
                         
                         try! moc.save()
-        
+                        
+                        print(product.name!)
+                        print(product.expiry!)
                         print(product.stock)
-                     
-                        self.image.count = 0
+                        print(product.reminder)
+                        
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 35)
@@ -256,32 +252,11 @@ struct EditItemModalView: View {
                 
             }.padding(.top)
         }
-//        .onAppear {
-//            let product = Item(context: moc)
-//
-//            name = product.name!
-//        }
-        
-        .overlay(secretOverlay)
+        .toolbar(showTabBar ? .visible : .hidden, for: .tabBar)
+        .navigationBarHidden(true)
+        .navigationBarTitle("")
         .onTapGesture {
             self.endTextEditing()
         }
-    }
-    
-    
-    @ViewBuilder private var secretOverlay: some View {
-        ZStack{
-            if overlay {
-                OverlayView().onTapGesture {
-                    overlay.toggle()
-                }
-            }
-        }
-    }
-}
-
-struct EditItemModalView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditItemModalView()
     }
 }

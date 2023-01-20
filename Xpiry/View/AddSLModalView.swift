@@ -91,7 +91,7 @@ struct AddSLModalView: View {
                     }
                 }
                 .disabled(itemName.isEmpty || itemStock.isEmpty)
-            }.navigationTitle(Text("Add Item"))
+            }.navigationTitle(Text("Add an Item"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {

@@ -15,153 +15,250 @@ struct AllItemsView: View {
     @State private var isPresented = false
     @State private var itemPressed = false
     @State private var image: Data = .init(count: 0)
-    @State private var itemType = 0
+    @State private var itemCondition = 0
+    @State private var refresh = UUID()
     
     var body: some View {
-        
-        VStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(height: 150)
-                    .foregroundColor(.gray)
-                
-                HStack {
-                    Text("All Items")
-                        .font(.system(size: 30, design: .rounded))
-                        .bold()
-                        .padding(.leading)
-                    Spacer()
-                    Button {
-                        isPresented.toggle()
-                    } label: {
-                        ZStack {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundColor(.white)
-                                .frame(width: 25, height: 25)
-                        }
-                    }   .fullScreenCover(isPresented: $isPresented, content: AddItemModalView.init)
-                }.padding(.bottom)
-                    .padding(.trailing)
-                
-                SearchBarView(searchText: $searchText, containerText: "Find Items")
-                    .offset(y:40)
-                    .padding()
-            }
-            
-            Picker("What is your favorite color?", selection: $itemType) {
-                Text("All Items").tag(0)
-                Text("Expired Items").tag(1)
-            }
-            .padding()
-            .pickerStyle(.segmented)
-            
-            List {
-                ForEach(items) { item in
-                    let lowSearch = searchText.lowercased()
-                    let lowProduct = item.name!.lowercased()
-                    if lowProduct.contains(lowSearch) {
-                        
-                        ZStack {
-                            if Date() >= item.expiry! {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-                                    .shadow(radius: 5)
-                                    .frame(height: 95)
-                            } else {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .foregroundColor(.white)
-                                    .shadow(radius: 5)
-                                    .frame(height: 95)
-                            }
-                            
-                            HStack {
-                                Image(uiImage: UIImage(data: item.image ?? self.image)!)
-                                    .renderingMode(.original)
+        NavigationView {
+            VStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(height: 150)
+                        .foregroundColor(.gray)
+                    
+                    HStack {
+                        Text("All Items")
+                            .font(.system(size: 30, design: .rounded))
+                            .bold()
+                            .padding(.leading)
+                        Spacer()
+                        Button {
+                            isPresented.toggle()
+                        } label: {
+                            ZStack {
+                                Image(systemName: "plus")
                                     .resizable()
-                                    .frame(width: 85, height: 85)
-                                    .clipShape(Circle())
-                                    .overlay(
-                                        Circle()
-                                            .strokeBorder(.black)
-                                    )
-                                VStack {
-                                    Text(item.name ?? " ")
-                                    Text(dateFormatter.string(from: item.expiry!))
-                                }
-                                Spacer()
-                                Text(String(item.stock))
-                                
-                            }
-                            .padding(.horizontal)
-                            
-                        }
-                        .listRowSeparator(.hidden)
-                        .onTapGesture {
-                            print("Tapped cell")
-                            itemPressed = true
-                        }
-                        .fullScreenCover(isPresented: $itemPressed, content: EditItemModalView.init)
-                        
-                    } else if searchText.isEmpty {
-                        
-                        ZStack {
-                            if Date() >= item.expiry!  {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-                                    .shadow(radius: 5)
-                                    .frame(height: 95)
-                            } else {
-                                RoundedRectangle(cornerRadius: 15)
+                                    .scaledToFit()
                                     .foregroundColor(.white)
-                                    .shadow(radius: 5)
-                                    .frame(height: 95)
+                                    .frame(width: 25, height: 25)
                             }
-                            
-                            HStack {
-                                Image(uiImage: UIImage(data: item.image ?? self.image)!)
-                                    .renderingMode(.original)
-                                    .resizable()
-                                    .frame(width: 85, height: 85)
-                                    .clipShape(Circle())
-                                    .overlay(
-                                        Circle()
-                                            .strokeBorder(.black)
-                                    )
-                                
-                                VStack {
-                                    Text(item.name ?? " ")
-                                    Text(dateFormatter.string(from: item.expiry!))
+                        }   .fullScreenCover(isPresented: $isPresented, content: AddItemModalView.init)
+                    }.padding(.bottom)
+                        .padding(.trailing)
+                    
+                    SearchBarView(searchText: $searchText, containerText: "Find Items")
+                        .offset(y:40)
+                        .padding()
+                }
+                
+                Picker("What is your favorite color?", selection: $itemCondition) {
+                    Text("All Items").tag(0)
+                    Text("Expired Items").tag(1)
+                }
+                .padding()
+                .pickerStyle(.segmented)
+                
+                if itemCondition == 0 {
+                    List {
+                        ForEach(items) { item in
+                            let lowSearch = searchText.lowercased()
+                            let lowProduct = item.name!.lowercased()
+                            if lowProduct.contains(lowSearch) {
+                                NavigationLink {
+                                    EditItemModalView(item: item).onDisappear { refresh = UUID() }
+                                } label: {
+                                    ZStack {
+                                        if Date() >= item.expiry! {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        } else {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(.white)
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        }
+                                        
+                                        HStack {
+                                            Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                .renderingMode(.original)
+                                                .resizable()
+                                                .frame(width: 85, height: 85)
+                                                .clipShape(Circle())
+                                                .overlay(
+                                                    Circle()
+                                                        .strokeBorder(.black)
+                                                )
+                                            VStack {
+                                                Text(item.name ?? " ")
+                                                Text(dateFormatter.string(from: item.expiry!))
+                                            }
+                                            Spacer()
+                                            Text(String(item.stock))
+                                            
+                                        }
+                                        .padding(.horizontal)
+                                        
+                                    }
+                                    
                                 }
-                                Spacer()
-                                Text(String(item.stock))
                                 
-                            }.padding(.horizontal)
-                        }
-                        .listRowSeparator(.hidden)
-                        .onTapGesture {
-                            print("Tapped cell")
-                            itemPressed = true
-                        }
-                        .fullScreenCover(isPresented: $itemPressed, content: EditItemModalView.init)
-                    }
-                }.onDelete(perform: deleteItems)
+                                
+                                
+                            } else if searchText.isEmpty {
+                                
+                                NavigationLink {
+                                    EditItemModalView(item: item)
+                                } label: {
+                                    ZStack {
+                                        if Date() >= item.expiry! {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        } else {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(.white)
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        }
+                                        
+                                        HStack {
+                                            Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                .renderingMode(.original)
+                                                .resizable()
+                                                .frame(width: 85, height: 85)
+                                                .clipShape(Circle())
+                                                .overlay(
+                                                    Circle()
+                                                        .strokeBorder(.black)
+                                                )
+                                            VStack {
+                                                Text(item.name ?? " ")
+                                                Text(dateFormatter.string(from: item.expiry!))
+                                            }
+                                            Spacer()
+                                            Text(String(item.stock))
+                                            
+                                        }
+                                        .padding(.horizontal)
+                                        
+                                    }
+                                    .listRowSeparator(.hidden)
+                                }
+                                
+                            }
+                        }.onDelete(perform: deleteItems)
+                            .listRowSeparator(.hidden)
+                    }.listStyle(.inset)
+                    
+                } else {
+                    List {
+                        ForEach(items) { item in
+                            let lowSearch = searchText.lowercased()
+                            let lowProduct = item.name!.lowercased()
+                            if lowProduct.contains(lowSearch) {
+                                NavigationLink {
+                                    EditItemModalView(item: item)
+                                } label: {
+                                    ZStack {
+                                        if Date() >= item.expiry! {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        } else {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(.white)
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        }
+                                        
+                                        HStack {
+                                            Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                .renderingMode(.original)
+                                                .resizable()
+                                                .frame(width: 85, height: 85)
+                                                .clipShape(Circle())
+                                                .overlay(
+                                                    Circle()
+                                                        .strokeBorder(.black)
+                                                )
+                                            VStack {
+                                                Text(item.name ?? " ")
+                                                Text(dateFormatter.string(from: item.expiry!))
+                                            }
+                                            Spacer()
+                                            Text(String(item.stock))
+                                            
+                                        }
+                                        .padding(.horizontal)
+                                        
+                                    }
+                                    
+                                }
+                                
+                            } else if searchText.isEmpty {
+                                
+                                NavigationLink {
+                                    EditItemModalView(item: item)
+                                } label: {
+                                    ZStack {
+                                        if Date() >= item.expiry! {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        } else {
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .foregroundColor(.white)
+                                                .shadow(radius: 5)
+                                                .frame(height: 95)
+                                        }
+                                        
+                                        HStack {
+                                            Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                .renderingMode(.original)
+                                                .resizable()
+                                                .frame(width: 85, height: 85)
+                                                .clipShape(Circle())
+                                                .overlay(
+                                                    Circle()
+                                                        .strokeBorder(.black)
+                                                )
+                                            VStack {
+                                                Text(item.name ?? " ")
+                                                Text(dateFormatter.string(from: item.expiry!))
+                                            }
+                                            Spacer()
+                                            Text(String(item.stock))
+                                            
+                                        }
+                                        .padding(.horizontal)
+                                        
+                                    }
+                                    .listRowSeparator(.hidden)
+                                }
+                                
+                            }
+                        }.onDelete(perform: deleteItems)
+                            .listRowSeparator(.hidden)
+                    }.listStyle(.inset)
+                }
                 
                 
-                
-                
-            }.listStyle(.inset)
-            
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(height: 100)
-                    .foregroundColor(.gray)
-                    .padding(.top, 20)
-                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(height: 100)
+                        .foregroundColor(.gray)
+                        .padding(.top, 20)
+                    
+                }
             }
-        }.ignoresSafeArea()
-            .preferredColorScheme(.light)
+            .ignoresSafeArea()
+                .preferredColorScheme(.light)
+        }
     }
     
     private func deleteItems(offsets: IndexSet) {
