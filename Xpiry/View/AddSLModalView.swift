@@ -41,7 +41,7 @@ struct AddSLModalView: View {
                     
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Stock")
+                            Text("Quantity")
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .padding(.bottom, 10)

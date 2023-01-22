@@ -14,7 +14,7 @@ struct AddItemModalView: View {
     @Environment(\.managedObjectContext) var moc
     
     @State private var name: String = ""
-    @State private var expiryDate = Date.now
+    @State private var expiryDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
     @State private var stock: String = ""
     @State private var reminder: String = ""
     @State private var scanPresented = false
@@ -128,6 +128,7 @@ struct AddItemModalView: View {
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                         }
+                       
                 }.padding()
                 
                 HStack {
@@ -199,22 +200,27 @@ struct AddItemModalView: View {
                 
                     Button {
                         let product = Item(context: moc)
+                        let usage = UsageReport(context: moc)
                         product.name = (name)
                         product.expiry = (expiryDate)
                         product.image = (image)
                         product.stock = Int16(stock) ?? Int16("")!
                         product.reminder = Int16(reminder) ?? Int16("")!
-                        
-                        presentationMode.wrappedValue.dismiss()
+                        if Date() >= expiryDate {
+                            product.expired = true
+                        } else {
+                            product.expired = false
+                        }
                         
                         try! moc.save()
-                        
+                        presentationMode.wrappedValue.dismiss()
                         print(product.name!)
                         print(product.expiry!)
                         print(product.stock)
                         print(product.reminder)
+                        print(product.expired)
                         
-//                        self.name = ""
+                        self.name = ""
                         self.image.count = 0
                     } label: {
                         ZStack {

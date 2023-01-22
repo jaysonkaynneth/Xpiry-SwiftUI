@@ -28,6 +28,7 @@
 		96C59863297127DA00482208 /* UsageReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C59862297127DA00482208 /* UsageReportView.swift */; };
 		96E5B882296B1AC00038CB6A /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B881296B1AC00038CB6A /* OverlayView.swift */; };
 		96E5B884296B1F3D0038CB6A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B883296B1F3D0038CB6A /* MainView.swift */; };
+		96F9C46D297C57450048CBB6 /* ListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F9C46C297C57450048CBB6 /* ListItemView.swift */; };
 		96FEE47D2979120600A4DD0B /* StartUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE47C2979120600A4DD0B /* StartUpView.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		96C59862297127DA00482208 /* UsageReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageReportView.swift; sourceTree = "<group>"; };
 		96E5B881296B1AC00038CB6A /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		96E5B883296B1F3D0038CB6A /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		96F9C46C297C57450048CBB6 /* ListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemView.swift; sourceTree = "<group>"; };
 		96FEE47C2979120600A4DD0B /* StartUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +116,7 @@
 			children = (
 				96E5B883296B1F3D0038CB6A /* MainView.swift */,
 				96FEE47C2979120600A4DD0B /* StartUpView.swift */,
+				96F9C46C297C57450048CBB6 /* ListItemView.swift */,
 				96C598612971279700482208 /* Non-screen Views */,
 				964D9F362935C48D00AA9B4F /* AllItemsView.swift */,
 				969FD138295447850066078D /* AddItemModalView.swift */,
@@ -261,6 +264,7 @@
 				96C59863297127DA00482208 /* UsageReportView.swift in Sources */,
 				961FFA3629796C9500554759 /* SegmentControlTest.swift in Sources */,
 				96E5B882296B1AC00038CB6A /* OverlayView.swift in Sources */,
+				96F9C46D297C57450048CBB6 /* ListItemView.swift in Sources */,
 				96A8CE2E29405276000BA342 /* AddItemTestView.swift in Sources */,
 				964D9F412935C48E00AA9B4F /* Xpiry.xcdatamodeld in Sources */,
 				96FEE47D2979120600A4DD0B /* StartUpView.swift in Sources */,

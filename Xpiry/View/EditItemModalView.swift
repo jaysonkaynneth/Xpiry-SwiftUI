@@ -14,7 +14,7 @@ struct EditItemModalView: View {
     @Environment(\.managedObjectContext) var moc
     
     @State private var name: String = ""
-    @State private var expiryDate = Date.now
+    @State private var expiryDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
     @State private var stock: String = ""
     @State private var reminder: String = ""
     @State private var scanPresented = false
@@ -23,7 +23,8 @@ struct EditItemModalView: View {
     @State private var overlay = false
     @State private var refresh = UUID()
     @State private var showTabBar = false
-    
+    @State private var showConsumeAlert = false
+    @State private var showWasteAlert = false
     let item: Item
     
     var body: some View {
@@ -37,17 +38,17 @@ struct EditItemModalView: View {
                         Text("Back")
                     }
                     Spacer()
-            
-                            Image(uiImage: UIImage(data: item.image ?? self.image)!)
-                                .renderingMode(.original)
-                                .resizable()
-                                .frame(width: 130, height: 130)
-                                .clipShape(Circle())
-                                .overlay(
-                                    Circle()
-                                        .strokeBorder(.black)
-                                )
-                   
+                    
+                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                        .renderingMode(.original)
+                        .resizable()
+                        .frame(width: 130, height: 130)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .strokeBorder(.black)
+                        )
+                    
                     
                     Spacer()
                     
@@ -56,7 +57,6 @@ struct EditItemModalView: View {
                         .foregroundColor(.clear)
                         .padding(.leading)
                 }.padding(.horizontal)
-                
                     .onChange(of: selectedItems) { new in
                         guard let items = selectedItems.first else { return
                             
@@ -84,22 +84,22 @@ struct EditItemModalView: View {
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .padding(.bottom, 10)
+                            Button {
+                                overlay.toggle()
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .padding(.bottom, 10)
+                            }
+                         
                         }
-                        ZStack {
-                            TextField("", text: $name)
-                                .disabled(true)
-                                .padding(.leading, 10)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .strokeBorder(.black)
-                                        .foregroundColor(.clear)
-                                        .frame(height: 35)
-                                )
-                            HStack {
-                                Text(item.name!)
-                                Spacer()
-                            }.padding(.leading)
-                        }
+                        TextField(item.name ?? " ", text: $name)
+                            .padding(.leading, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(.black)
+                                    .foregroundColor(.clear)
+                                    .frame(height: 35)
+                            )
                     }
                     Spacer()
                 }
@@ -107,20 +107,12 @@ struct EditItemModalView: View {
                 .padding(.top)
                 
                 HStack {
-                    ZStack {
-                        HStack {
-                            Spacer()
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 120, height: 30)
-                                .foregroundColor(Color(red: 230/255, green: 232/255, blue: 230/255))
-                        }
                         DatePicker(selection: $expiryDate, displayedComponents: .date) {
                             Text("Expiry Date")
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
-                        }.disabled(true)
-                    }
-                    Spacer()
+                        }
+                       
                 }.padding()
                 
                 HStack {
@@ -129,28 +121,25 @@ struct EditItemModalView: View {
                             .font(.system(size: 18, design: .rounded))
                             .bold()
                             .padding(.bottom, 10)
-                        ZStack {
-                                TextField("", text: $stock)
-                                    .disabled(true)
-                                    .keyboardType(.numberPad)
-                                    .onReceive(Just(stock)) { input in
-                                        let filtered = input.filter { "0123456789".contains($0) }
-                                        if filtered != input {
-                                            self.stock = filtered
-                                        }
-                                    }
-                                    .frame(width: 80)
-                                    .fixedSize(horizontal: true, vertical: false)
-                                    .padding(.leading, 10)
-                                    .padding(.trailing, 10)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .strokeBorder(.black)
-                                            .foregroundColor(.clear)
-                                            .frame(height: 35)
-                                    )
-                            Text(String(item.stock))
-                        }
+                        
+                        TextField(String(item.stock), text: $stock)
+                            .keyboardType(.numberPad)
+                            .onReceive(Just(stock)) { input in
+                                let filtered = input.filter { "0123456789".contains($0) }
+                                if filtered != input {
+                                    self.stock = filtered
+                                }
+                            }
+                            .frame(width: 80)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .padding(.leading, 10)
+                            .padding(.trailing, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(.black)
+                                    .foregroundColor(.clear)
+                                    .frame(height: 35)
+                            )
                     }
                     Spacer()
                 }.padding(.horizontal)
@@ -163,9 +152,7 @@ struct EditItemModalView: View {
                             .padding(.bottom, 10)
                         
                         HStack {
-                            ZStack {
-                            TextField("", text: $reminder)
-                                .disabled(true)
+                            TextField(String(item.reminder), text: $reminder)
                                 .keyboardType(.numberPad)
                                 .onReceive(Just(reminder)) { input in
                                     let filtered = input.filter { "0123456789".contains($0) }
@@ -183,8 +170,7 @@ struct EditItemModalView: View {
                                         .foregroundColor(.clear)
                                         .frame(height: 35)
                                 )
-                                Text(String(item.reminder))
-                        }
+                            
                             Text("Day(s) before expiring")
                                 .font(.system(size: 18, design: .rounded))
                         }
@@ -193,20 +179,12 @@ struct EditItemModalView: View {
                 }
                 .padding(.top)
                 .padding(.horizontal)
+
                 
                 Spacer()
                 HStack {
                     Button {
-                        let product = Item(context: moc)
-                        
-                        item.stock -= 1
-                        
-                        
-                        presentationMode.wrappedValue.dismiss()
-                        
-                        try! moc.save()
-                        
-                        print(product.stock)
+                        showConsumeAlert = true
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 35)
@@ -218,25 +196,70 @@ struct EditItemModalView: View {
                                 .foregroundColor(.white)
                         }
                     }
+                    .confirmationDialog("Select a color", isPresented: $showConsumeAlert, titleVisibility: .visible) {
+                        Button("Consume 1") {
+                            
+                            item.name = item.name
+                            item.expiry = item.expiry
+                            item.image = item.image
+                            item.reminder = item.reminder
+                            if Date() >= expiryDate {
+                                item.expired = true
+                            } else {
+                                item.expired = false
+                            }
+                            item.stock -= 1
+                            
+                            presentationMode.wrappedValue.dismiss()
+                            
+                            try! moc.save()
+                            
+                            print(item.stock)
+                        }
+                        
+                        Button("Consume 5") {
+                            
+                            item.name = item.name
+                            item.expiry = item.expiry
+                            item.image = item.image
+                            item.reminder = item.reminder
+                            if Date() >= expiryDate {
+                                item.expired = true
+                            } else {
+                                item.expired = false
+                            }
+                            item.stock -= 5
+                            
+                            presentationMode.wrappedValue.dismiss()
+                            
+                            try! moc.save()
+                            
+                            print(item.stock)
+                        }
+                        
+                        Button("Consume All") {
+                            
+                            item.name = item.name
+                            item.expiry = item.expiry
+                            item.image = item.image
+                            item.reminder = item.reminder
+                            if Date() >= expiryDate {
+                                item.expired = true
+                            } else {
+                                item.expired = false
+                            }
+                            item.stock -= item.stock
+                            
+                            presentationMode.wrappedValue.dismiss()
+                            
+                            try! moc.save()
+                            
+                            print(item.stock)
+                        }
+                    }
                     Spacer()
                     Button {
-                        let product = Item(context: moc)
-
-                     
-                        product.expiry = item.expiry
-                        product.image = item.image
-                        product.stock = item.stock
-                        product.reminder = item.reminder
-                        
-                        presentationMode.wrappedValue.dismiss()
-                        
-                        try! moc.save()
-                        
-                        print(product.name!)
-                        print(product.expiry!)
-                        print(product.stock)
-                        print(product.reminder)
-                        
+                        showWasteAlert = true
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 35)
@@ -248,7 +271,128 @@ struct EditItemModalView: View {
                                 .foregroundColor(.white)
                         }
                     }
+                    .confirmationDialog("Select a color", isPresented: $showWasteAlert, titleVisibility: .visible) {
+                        Button("Waste 1") {
+                            
+//                            let product = Item(context: moc)
+                            
+                            item.name = item.name
+                            item.expiry = item.expiry
+                            item.image = item.image
+                            item.reminder = item.reminder
+                            if Date() >= expiryDate {
+                                item.expired = true
+                            } else {
+                                item.expired = false
+                            }
+                            
+                            item.stock -= 1
+                            
+                            presentationMode.wrappedValue.dismiss()
+                            
+                            try! moc.save()
+                            
+                            print(item.stock)
+                        }
+                        
+                        Button("Waste 5") {
+                           
+                            
+                            item.name = item.name
+                            item.expiry = item.expiry
+                            item.image = item.image
+                            item.reminder = item.reminder
+                            if Date() >= expiryDate {
+                                item.expired = true
+                            } else {
+                                item.expired = false
+                            }
+                            item.stock -= 5
+                            
+                            presentationMode.wrappedValue.dismiss()
+                            
+                            try! moc.save()
+                            
+                            print(item.stock)
+                        }
+                        
+                        Button("Waste All") {
+                           
+                            
+                            item.name = item.name
+                            item.expiry = item.expiry
+                            item.image = item.image
+                            item.reminder = item.reminder
+                            if Date() >= expiryDate {
+                                item.expired = true
+                            } else {
+                                item.expired = false
+                            }
+                            item.stock -= item.stock
+                            
+                            presentationMode.wrappedValue.dismiss()
+                            
+                            try! moc.save()
+                            
+                            print(item.stock)
+                        }
+                    }
                 }.padding(.horizontal)
+                
+                Button {
+                    
+          
+                    
+                    if name.isEmpty {
+                        item.name = item.name
+                    } else if !name.isEmpty {
+                        item.name = (name)
+                    }
+                    
+                    if stock.isEmpty {
+                        item.stock = item.stock
+                    } else if !stock.isEmpty {
+                        item.stock = Int16(stock) ?? Int16("")!
+                    }
+                    
+                    if reminder.isEmpty {
+                        item.reminder = item.reminder
+                    } else if !reminder.isEmpty {
+                        item.reminder = Int16(reminder) ?? Int16("")!
+                    }
+      
+                    item.image = item.image
+                    item.expiry = (expiryDate)
+                    if Date() >= expiryDate {
+                        item.expired = true
+                    } else {
+                        item.expired = false
+                    }
+                    
+                    try! moc.save()
+                    
+                    presentationMode.wrappedValue.dismiss()
+                    
+                    print(item.name!)
+                    print(item.expiry!)
+                    print(item.stock)
+                    print(item.reminder)
+                    print(item.expired)
+                    
+                    self.name = ""
+                    self.image.count = 0
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 35)
+                            .frame(width: 200, height: 60)
+                        
+                        Text("Save")
+                            .font(.system(size: 18, design: .rounded))
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding()
+//                .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty)
                 
             }.padding(.top)
         }
