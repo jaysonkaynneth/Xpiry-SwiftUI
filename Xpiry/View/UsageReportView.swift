@@ -10,10 +10,14 @@ import SwiftUI
 struct UsageReportView: View {
     
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var usageReport: FetchedResults<UsageReport>
+    @FetchRequest(sortDescriptors: []) var reports: FetchedResults<UsageReport>
     @State private var showModal = false
     @State private var tapped = false
     @State private var searchText = ""
+    @State private var conCount = 0
+    @State private var wasCount = 0
+    
+//    let usage: UsageReport
     
     var body: some View {
         VStack {
@@ -44,8 +48,39 @@ struct UsageReportView: View {
                 }.padding(.bottom)
                     .padding(.trailing)
             }
-        
-            ScrollView {
+            
+            //            ScrollView {
+            //                ZStack {
+            //                    RoundedRectangle(cornerRadius: 15)
+            //                        .foregroundColor(.white)
+            //                        .shadow(radius: 5)
+            //                        .frame(height: 95)
+            //                    HStack {
+            //                        Text("Products Wasted")
+            //                        Spacer()
+            //                        Text(String(wastes.count))
+            //                            .padding()
+            //                    }.padding(.horizontal)
+            //                }
+            //                .padding(.top)
+            //                .padding(.horizontal)
+            //
+            //                ZStack {
+            //                    RoundedRectangle(cornerRadius: 15)
+            //                        .foregroundColor(.white)
+            //                        .shadow(radius: 5)
+            //                        .frame(height: 95)
+            //                    HStack {
+            //                        Text("Products Consumed")
+            //                        Spacer()
+            //                        Text(String(consumes.count))
+            //                            .padding()
+            //                    }.padding(.horizontal)
+            //                }.padding()
+            //
+            //
+            //            }
+            List {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .foregroundColor(.white)
@@ -54,24 +89,31 @@ struct UsageReportView: View {
                     HStack {
                         Text("Products Wasted")
                         Spacer()
+                        Text(String(reports.count))
+                            .padding()
                     }.padding(.horizontal)
                 }
-                .padding(.top)
-                .padding(.horizontal)
                 
                 ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
-                        .frame(height: 95)
-                    HStack {
-                        Text("Products Consumed")
-                        Spacer()
-                    }.padding(.horizontal)
-                }.padding()
+                     RoundedRectangle(cornerRadius: 15)
+                         .foregroundColor(.white)
+                         .shadow(radius: 5)
+                         .frame(height: 95)
+                     HStack {
+                         Text("Products Consumed")
+                         Spacer()
+                         Text(String(reports.count))
+                             .padding()
+                     }.padding(.horizontal)
+                 }.listRowSeparator(.hidden)
                 
                 Image("UsagePlaceHolder")
+                    .listRowSeparator(.hidden)
             }
+            .accentColor(.clear)
+            .listStyle(.inset)
+            
+         
             
             ZStack {
                 RoundedRectangle(cornerRadius: 10)

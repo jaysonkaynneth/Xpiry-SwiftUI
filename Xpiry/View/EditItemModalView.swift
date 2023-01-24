@@ -13,10 +13,13 @@ struct EditItemModalView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var moc
     
+    let item: Item
+    
     @State private var name: String = ""
     @State private var expiryDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
     @State private var stock: String = ""
     @State private var reminder: String = ""
+    @State private var note: String = ""
     @State private var scanPresented = false
     @State private var image: Data = .init(count: 0)
     @State private var selectedItems: [PhotosPickerItem] = []
@@ -25,7 +28,8 @@ struct EditItemModalView: View {
     @State private var showTabBar = false
     @State private var showConsumeAlert = false
     @State private var showWasteAlert = false
-    let item: Item
+
+    
     
     var body: some View {
         ZStack {
@@ -90,7 +94,7 @@ struct EditItemModalView: View {
                                 Image(systemName: "info.circle")
                                     .padding(.bottom, 10)
                             }
-                         
+                            
                         }
                         TextField(item.name ?? " ", text: $name)
                             .padding(.leading, 10)
@@ -107,12 +111,12 @@ struct EditItemModalView: View {
                 .padding(.top)
                 
                 HStack {
-                        DatePicker(selection: $expiryDate, displayedComponents: .date) {
-                            Text("Expiry Date")
-                                .font(.system(size: 18, design: .rounded))
-                                .bold()
-                        }
-                       
+                    DatePicker(selection: $expiryDate, displayedComponents: .date) {
+                        Text("Expiry Date")
+                            .font(.system(size: 18, design: .rounded))
+                            .bold()
+                    }
+                    
                 }.padding()
                 
                 HStack {
@@ -179,7 +183,29 @@ struct EditItemModalView: View {
                 }
                 .padding(.top)
                 .padding(.horizontal)
-
+                
+                HStack {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Note")
+                                .font(.system(size: 18, design: .rounded))
+                                .bold()
+                                .padding(.bottom, 10)
+                        }
+                        TextField("", text: $note)
+                            .placeholder(when: note.isEmpty) {
+                                Text(item.note ?? "").foregroundColor(.black)
+                            }
+                            .padding(.leading, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(.black)
+                                    .foregroundColor(.clear)
+                                    .frame(height: 35)
+                                )
+                    }
+                    Spacer()
+                }.padding()
                 
                 Spacer()
                 HStack {
@@ -196,13 +222,18 @@ struct EditItemModalView: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    .confirmationDialog("Select a color", isPresented: $showConsumeAlert, titleVisibility: .visible) {
+                    .confirmationDialog(" ", isPresented: $showConsumeAlert, titleVisibility: .visible) {
                         Button("Consume 1") {
+                            showTabBar.toggle()
+                            let usage = UsageReport(context: moc)
+                            
+                            usage.consumed += 1
                             
                             item.name = item.name
                             item.expiry = item.expiry
                             item.image = item.image
                             item.reminder = item.reminder
+                            item.note = item.note
                             if Date() >= expiryDate {
                                 item.expired = true
                             } else {
@@ -218,37 +249,57 @@ struct EditItemModalView: View {
                         }
                         
                         Button("Consume 5") {
+                            showTabBar.toggle()
+                            let usage = UsageReport(context: moc)
                             
                             item.name = item.name
                             item.expiry = item.expiry
                             item.image = item.image
                             item.reminder = item.reminder
+                            item.note = item.note
                             if Date() >= expiryDate {
                                 item.expired = true
                             } else {
                                 item.expired = false
                             }
-                            item.stock -= 5
+                            
+                            if item.stock >= 5 {
+                                item.stock -= 5
+                            } else {
+                                item.stock -= item.stock
+                            }
+                            
                             
                             presentationMode.wrappedValue.dismiss()
-                            
-                            try! moc.save()
+                        
+                                
+                            for _ in 1...5 {
+                                usage.consumed += 1
+                                try! moc.save()
+                            }
                             
                             print(item.stock)
                         }
                         
                         Button("Consume All") {
+                            showTabBar.toggle()
+                            let usage = UsageReport(context: moc)
+                            
+                            usage.consumed += item.stock
                             
                             item.name = item.name
                             item.expiry = item.expiry
                             item.image = item.image
                             item.reminder = item.reminder
+                            item.note = item.note
                             if Date() >= expiryDate {
                                 item.expired = true
                             } else {
                                 item.expired = false
                             }
                             item.stock -= item.stock
+                            
+                            
                             
                             presentationMode.wrappedValue.dismiss()
                             
@@ -271,15 +322,18 @@ struct EditItemModalView: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    .confirmationDialog("Select a color", isPresented: $showWasteAlert, titleVisibility: .visible) {
+                    .confirmationDialog(" ", isPresented: $showWasteAlert, titleVisibility: .visible) {
                         Button("Waste 1") {
+                            showTabBar.toggle()
+                            let usage = UsageReport(context: moc)
                             
-//                            let product = Item(context: moc)
+                            usage.wasted += 1
                             
                             item.name = item.name
                             item.expiry = item.expiry
                             item.image = item.image
                             item.reminder = item.reminder
+                            item.note = item.note
                             if Date() >= expiryDate {
                                 item.expired = true
                             } else {
@@ -296,18 +350,27 @@ struct EditItemModalView: View {
                         }
                         
                         Button("Waste 5") {
-                           
+                            showTabBar.toggle()
+                            let usage = UsageReport(context: moc)
+                            
+                            usage.wasted += 5
                             
                             item.name = item.name
                             item.expiry = item.expiry
                             item.image = item.image
                             item.reminder = item.reminder
+                            item.note = item.note
                             if Date() >= expiryDate {
                                 item.expired = true
                             } else {
                                 item.expired = false
                             }
-                            item.stock -= 5
+                            
+                            if item.stock >= 5 {
+                                item.stock -= 5
+                            } else {
+                                item.stock -= item.stock
+                            }
                             
                             presentationMode.wrappedValue.dismiss()
                             
@@ -317,12 +380,16 @@ struct EditItemModalView: View {
                         }
                         
                         Button("Waste All") {
-                           
+                            showTabBar.toggle()
+                            let usage = UsageReport(context: moc)
+                            
+                            usage.wasted += item.stock
                             
                             item.name = item.name
                             item.expiry = item.expiry
                             item.image = item.image
                             item.reminder = item.reminder
+                            item.note = item.note
                             if Date() >= expiryDate {
                                 item.expired = true
                             } else {
@@ -340,8 +407,8 @@ struct EditItemModalView: View {
                 }.padding(.horizontal)
                 
                 Button {
+                    showTabBar.toggle()
                     
-          
                     
                     if name.isEmpty {
                         item.name = item.name
@@ -360,7 +427,13 @@ struct EditItemModalView: View {
                     } else if !reminder.isEmpty {
                         item.reminder = Int16(reminder) ?? Int16("")!
                     }
-      
+                    
+                    if note.isEmpty {
+                        item.note = item.note
+                    } else if !note.isEmpty {
+                        item.note = (note)
+                    }
+                    
                     item.image = item.image
                     item.expiry = (expiryDate)
                     if Date() >= expiryDate {
@@ -368,6 +441,8 @@ struct EditItemModalView: View {
                     } else {
                         item.expired = false
                     }
+                    
+                    
                     
                     try! moc.save()
                     
@@ -392,7 +467,7 @@ struct EditItemModalView: View {
                     }
                 }
                 .padding()
-//                .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty)
+                //                .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty)
                 
             }.padding(.top)
         }

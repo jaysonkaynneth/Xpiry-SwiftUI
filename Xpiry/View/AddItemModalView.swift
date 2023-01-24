@@ -17,6 +17,7 @@ struct AddItemModalView: View {
     @State private var expiryDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
     @State private var stock: String = ""
     @State private var reminder: String = ""
+    @State private var note: String = ""
     @State private var scanPresented = false
     @State private var image: Data = .init(count: 0)
     @State private var selectedItems: [PhotosPickerItem] = []
@@ -196,16 +197,37 @@ struct AddItemModalView: View {
                 .padding(.top)
                 .padding(.horizontal)
                 
+                HStack {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Note")
+                                .font(.system(size: 18, design: .rounded))
+                                .bold()
+                                .padding(.bottom, 10)
+                        }
+                        TextField("", text: $note)
+                            .padding(.leading, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(.black)
+                                    .foregroundColor(.clear)
+                                    .frame(height: 35)
+                                )
+                    }
+                    Spacer()
+                }.padding()
+                
                    Spacer()
                 
                     Button {
                         let product = Item(context: moc)
-                        let usage = UsageReport(context: moc)
+                   
                         product.name = (name)
                         product.expiry = (expiryDate)
                         product.image = (image)
                         product.stock = Int16(stock) ?? Int16("")!
                         product.reminder = Int16(reminder) ?? Int16("")!
+                        product.note = (note)
                         if Date() >= expiryDate {
                             product.expired = true
                         } else {

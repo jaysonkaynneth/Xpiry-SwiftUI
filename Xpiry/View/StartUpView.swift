@@ -11,7 +11,9 @@ struct StartUpView: View {
     
     @Environment(\.managedObjectContext) var moc
     @Binding var showStartUp: Bool
+    
     @State private var userName: String = ""
+    @State private var showAlert = false
     var body: some View {
         VStack {
             HStack {
@@ -39,16 +41,7 @@ struct StartUpView: View {
             Spacer()
             
             Button {
-             
-                let user = User(context: moc)
-                user.name = (userName)
-                
-                showStartUp.toggle()
-                
-                print(user.name ?? "nothing")
-                
-                try! moc.save()
-                
+                showAlert = true
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 35)
@@ -58,7 +51,34 @@ struct StartUpView: View {
                         .font(.system(size: 18, design: .rounded))
                         .foregroundColor(.white)
                 }
-            } .disabled(userName.isEmpty)
+            }
+            .disabled(userName.isEmpty)
+            .actionSheet(isPresented: $showAlert) {
+                ActionSheet(title: Text("Are you sure?"),
+                            message: Text("Your name cannot be changed later on"),
+                            buttons: [
+                                .cancel(),
+                                .default(
+                                    Text("Yes i'm sure"),
+                                    action: {
+                                        let user = User(context: moc)
+                                        user.name = (userName)
+                                        
+                                        showStartUp.toggle()
+                                        
+                                        print(user.name ?? "nothing")
+                                        
+                                        try! moc.save()
+                                    }),
+                                .destructive(
+                                    Text("No"),
+                                    action: {
+                                        showAlert = false
+                                    }
+                                )
+                            ]
+                )
+            }
         }
     }
 }
