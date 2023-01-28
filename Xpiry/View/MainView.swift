@@ -10,6 +10,10 @@ import SwiftUI
 struct MainView: View {
     @AppStorage("showStartUp") var showStartUp: Bool = true
     
+    init() {
+        UITabBar.appearance().unselectedItemTintColor = UIColor.lightGray
+    }
+   
     var body: some View {
         TabView {
             AllItemsView().tabItem {
@@ -23,10 +27,12 @@ struct MainView: View {
             UsageReportView().tabItem {
                 Label("Usage Report", systemImage: "chart.pie")
             }
-        }.onAppear(perform: notifRequest)
-            .fullScreenCover(isPresented: $showStartUp, content: {
+        }
+        .onAppear(perform: notifRequest)
+        .fullScreenCover(isPresented: $showStartUp, content: {
                 StartUpView(showStartUp: $showStartUp)
             })
+        .tint(.white)
     }
     
     func notifRequest() {

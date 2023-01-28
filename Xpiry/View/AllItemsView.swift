@@ -24,11 +24,12 @@ struct AllItemsView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 150)
-                        .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                        .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                     
                     HStack {
                         Text("All Items")
                             .font(.system(size: 30, design: .rounded))
+                            .foregroundColor(.white)
                             .bold()
                             .padding(.leading)
                         Spacer()
@@ -269,7 +270,7 @@ struct AllItemsView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 100)
-                        .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                        .foregroundColor(Color(red:12/255, green: 91/255, blue: 198/255))
                         .padding(.top, 20)
                     
                 }

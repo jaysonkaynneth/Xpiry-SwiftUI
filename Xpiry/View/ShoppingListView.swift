@@ -23,11 +23,12 @@ struct ShoppingListView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(height: 150)
-                    .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                 
                 HStack {
                     Text("Shopping List")
                         .font(.system(size: 30, design: .rounded))
+                        .foregroundColor(.white)
                         .bold()
                         .padding(.leading)
                     Spacer()
@@ -83,8 +84,7 @@ struct ShoppingListView: View {
                                     try? moc.save()
                                 } label: {
                                     Image(systemName: sItem.done ? "checkmark" : "")
-                                        .foregroundColor(Color(red: 251/255, green: 80/255, blue: 18/255))
-                                }
+                                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))                                }
                                 
                             }
                             
@@ -99,7 +99,7 @@ struct ShoppingListView: View {
                                     try? moc.save()
                                 } label: {
                                     Image(systemName: sItem.done ? "checkmark" : "")
-                                        .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                                        .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                                 }
                             }
                         }
@@ -122,7 +122,7 @@ struct ShoppingListView: View {
                                 try? moc.save()
                             } label: {
                                 Image(systemName: sItem.done ? "checkmark" : " ")
-                                    .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                             }
                             
                         }
@@ -146,7 +146,7 @@ struct ShoppingListView: View {
                                 try? moc.save()
                             } label: {
                                 Image(systemName: sItem.done ? "checkmark" : "")
-                                    .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                             }
                             
                         }
@@ -160,7 +160,7 @@ struct ShoppingListView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(height: 100)
-                    .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                     .padding(.top, 20)
                 
             }

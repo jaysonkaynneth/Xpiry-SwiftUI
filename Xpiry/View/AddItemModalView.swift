@@ -32,6 +32,7 @@ struct AddItemModalView: View {
                     } label: {
                         Text("Back")
                     }
+                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                     Spacer()
                     PhotosPicker(selection: $selectedItems,
                                  maxSelectionCount: 1,
@@ -110,6 +111,7 @@ struct AddItemModalView: View {
                          
                         }
                         TextField("", text: $name)
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             .padding(.leading, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
@@ -129,6 +131,7 @@ struct AddItemModalView: View {
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                         }
+                        .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                        
                 }.padding()
                 
@@ -140,6 +143,7 @@ struct AddItemModalView: View {
                             .padding(.bottom, 10)
                         
                         TextField("", text: $stock)
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             .keyboardType(.numberPad)
                             .onReceive(Just(stock)) { input in
                                 let filtered = input.filter { "0123456789".contains($0) }
@@ -170,6 +174,7 @@ struct AddItemModalView: View {
                         
                         HStack {
                             TextField("", text: $reminder)
+                                .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                                 .keyboardType(.numberPad)
                                 .onReceive(Just(reminder)) { input in
                                     let filtered = input.filter { "0123456789".contains($0) }
@@ -198,6 +203,7 @@ struct AddItemModalView: View {
                 .padding(.horizontal)
                 
                 HStack {
+                    
                     VStack(alignment: .leading) {
                         HStack {
                             Text("Note")
@@ -206,6 +212,7 @@ struct AddItemModalView: View {
                                 .padding(.bottom, 10)
                         }
                         TextField("", text: $note)
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             .padding(.leading, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
@@ -254,6 +261,7 @@ struct AddItemModalView: View {
                                 .foregroundColor(.white)
                         }
                     }
+                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                     .padding()
                     .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty || image.isEmpty)
             }.padding(.top)

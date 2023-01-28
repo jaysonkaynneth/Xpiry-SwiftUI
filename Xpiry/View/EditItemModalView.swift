@@ -28,6 +28,7 @@ struct EditItemModalView: View {
     @State private var showTabBar = false
     @State private var showConsumeAlert = false
     @State private var showWasteAlert = false
+    @State private var stockAlert = false
 
     
     
@@ -41,6 +42,7 @@ struct EditItemModalView: View {
                     } label: {
                         Text("Back")
                     }
+                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                     Spacer()
                     
                     Image(uiImage: UIImage(data: item.image ?? self.image)!)
@@ -97,6 +99,7 @@ struct EditItemModalView: View {
                             
                         }
                         TextField(item.name ?? " ", text: $name)
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             .padding(.leading, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
@@ -116,6 +119,7 @@ struct EditItemModalView: View {
                             .font(.system(size: 18, design: .rounded))
                             .bold()
                     }
+                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                     
                 }.padding()
                 
@@ -127,6 +131,7 @@ struct EditItemModalView: View {
                             .padding(.bottom, 10)
                         
                         TextField(String(item.stock), text: $stock)
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             .keyboardType(.numberPad)
                             .onReceive(Just(stock)) { input in
                                 let filtered = input.filter { "0123456789".contains($0) }
@@ -157,6 +162,7 @@ struct EditItemModalView: View {
                         
                         HStack {
                             TextField(String(item.reminder), text: $reminder)
+                                .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                                 .keyboardType(.numberPad)
                                 .onReceive(Just(reminder)) { input in
                                     let filtered = input.filter { "0123456789".contains($0) }
@@ -193,9 +199,7 @@ struct EditItemModalView: View {
                                 .padding(.bottom, 10)
                         }
                         TextField("", text: $note)
-                            .placeholder(when: note.isEmpty) {
-                                Text(item.note ?? "").foregroundColor(.black)
-                            }
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             .padding(.leading, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
@@ -222,12 +226,12 @@ struct EditItemModalView: View {
                                 .foregroundColor(.white)
                         }
                     }
+                    .alert("You are out of stock!", isPresented: $stockAlert) {
+                        Button("OK", role: .cancel) { }
+                    }
                     .confirmationDialog(" ", isPresented: $showConsumeAlert, titleVisibility: .visible) {
                         Button("Consume 1") {
                             showTabBar.toggle()
-                            let usage = UsageReport(context: moc)
-                            
-                            usage.consumed += 1
                             
                             item.name = item.name
                             item.expiry = item.expiry
@@ -239,10 +243,15 @@ struct EditItemModalView: View {
                             } else {
                                 item.expired = false
                             }
-                            item.stock -= 1
                             
+                            if item.stock >= 1 {
+                                item.stock -= 1
+                                consume()
+                            } else {
+                                stockAlert = true
+                            }
+                    
                             presentationMode.wrappedValue.dismiss()
-                            
                             try! moc.save()
                             
                             print(item.stock)
@@ -250,7 +259,20 @@ struct EditItemModalView: View {
                         
                         Button("Consume 5") {
                             showTabBar.toggle()
-                            let usage = UsageReport(context: moc)
+                         
+                            if item.stock >= 5 {
+                                for _ in 1...5{
+                                    consume()
+                                }
+                                
+                            } else if item.stock == 0 {
+                                stockAlert = true
+                                
+                            } else {
+                                for _ in 1...item.stock{
+                                    consume()
+                                }
+                            }
                             
                             item.name = item.name
                             item.expiry = item.expiry
@@ -268,24 +290,22 @@ struct EditItemModalView: View {
                             } else {
                                 item.stock -= item.stock
                             }
-                            
-                            
                             presentationMode.wrappedValue.dismiss()
-                        
-                                
-                            for _ in 1...5 {
-                                usage.consumed += 1
                                 try! moc.save()
-                            }
-                            
+                                      
                             print(item.stock)
                         }
                         
                         Button("Consume All") {
                             showTabBar.toggle()
-                            let usage = UsageReport(context: moc)
                             
-                            usage.consumed += item.stock
+                            if item.stock > 0 {
+                                for _ in 1...item.stock {
+                                    consume()
+                                }
+                            } else {
+                                stockAlert = true
+                            }
                             
                             item.name = item.name
                             item.expiry = item.expiry
@@ -298,8 +318,6 @@ struct EditItemModalView: View {
                                 item.expired = false
                             }
                             item.stock -= item.stock
-                            
-                            
                             
                             presentationMode.wrappedValue.dismiss()
                             
@@ -325,9 +343,6 @@ struct EditItemModalView: View {
                     .confirmationDialog(" ", isPresented: $showWasteAlert, titleVisibility: .visible) {
                         Button("Waste 1") {
                             showTabBar.toggle()
-                            let usage = UsageReport(context: moc)
-                            
-                            usage.wasted += 1
                             
                             item.name = item.name
                             item.expiry = item.expiry
@@ -340,10 +355,14 @@ struct EditItemModalView: View {
                                 item.expired = false
                             }
                             
-                            item.stock -= 1
-                            
+                            if item.stock >= 1 {
+                                item.stock -= 1
+                                waste()
+                            } else {
+                                stockAlert = true
+                            }
+                          
                             presentationMode.wrappedValue.dismiss()
-                            
                             try! moc.save()
                             
                             print(item.stock)
@@ -351,9 +370,20 @@ struct EditItemModalView: View {
                         
                         Button("Waste 5") {
                             showTabBar.toggle()
-                            let usage = UsageReport(context: moc)
-                            
-                            usage.wasted += 5
+                    
+                            if item.stock >= 5 {
+                                for _ in 1...5{
+                                    waste()
+                                }
+                                
+                            } else if item.stock == 0 {
+                                stockAlert = true
+                                
+                            } else {
+                                for _ in 1...item.stock{
+                                    waste()
+                                }
+                            }
                             
                             item.name = item.name
                             item.expiry = item.expiry
@@ -373,7 +403,6 @@ struct EditItemModalView: View {
                             }
                             
                             presentationMode.wrappedValue.dismiss()
-                            
                             try! moc.save()
                             
                             print(item.stock)
@@ -381,9 +410,14 @@ struct EditItemModalView: View {
                         
                         Button("Waste All") {
                             showTabBar.toggle()
-                            let usage = UsageReport(context: moc)
                             
-                            usage.wasted += item.stock
+                            if item.stock > 0 {
+                                for _ in 1...item.stock {
+                                    waste()
+                                }
+                            } else {
+                                stockAlert = true
+                            }
                             
                             item.name = item.name
                             item.expiry = item.expiry
@@ -434,6 +468,7 @@ struct EditItemModalView: View {
                         item.note = (note)
                     }
                     
+                    
                     item.image = item.image
                     item.expiry = (expiryDate)
                     if Date() >= expiryDate {
@@ -466,6 +501,7 @@ struct EditItemModalView: View {
                             .foregroundColor(.white)
                     }
                 }
+                .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                 .padding()
                 //                .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty)
                 
@@ -477,5 +513,23 @@ struct EditItemModalView: View {
         .onTapGesture {
             self.endTextEditing()
         }
+        .onAppear {
+            self.name = item.name ?? ""
+            self.stock = String(item.stock)
+            self.reminder = String(item.reminder)
+            self.note = item.note ?? ""
+            self.expiryDate = item.expiry ?? Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
+        }
+    }
+    func consume() {
+        let consume = Consume(context: moc)
+        
+        consume.consumed += 1
+    }
+    
+    func waste() {
+        let waste = Waste(context: moc)
+        
+        waste.wasted += 1
     }
 }

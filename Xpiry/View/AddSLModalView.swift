@@ -31,6 +31,7 @@ struct AddSLModalView: View {
                     }
                     
                     TextField("", text: $itemName)
+                        .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                         .padding(.leading, 10)
                         .background(
                             RoundedRectangle(cornerRadius: 20)
@@ -47,6 +48,7 @@ struct AddSLModalView: View {
                                 .padding(.bottom, 10)
                             
                             TextField("", text: $itemStock)
+                                .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                                 .keyboardType(.numberPad)
                                 .onReceive(Just(itemStock)) { input in
                                     let filtered = input.filter { "0123456789".contains($0) }
@@ -90,6 +92,7 @@ struct AddSLModalView: View {
                             .foregroundColor(.white)
                     }
                 }
+                .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                 .disabled(itemName.isEmpty || itemStock.isEmpty)
             }.navigationTitle(Text("Add an Item"))
                 .navigationBarTitleDisplayMode(.inline)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		961FFA3629796C9500554759 /* SegmentControlTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FFA3529796C9500554759 /* SegmentControlTest.swift */; };
+		9623929B298230BF0015A949 /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9623929A298230BF0015A949 /* ProgressViewStyle.swift */; };
 		964D9F352935C48D00AA9B4F /* XpiryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D9F342935C48D00AA9B4F /* XpiryApp.swift */; };
 		964D9F372935C48D00AA9B4F /* AllItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D9F362935C48D00AA9B4F /* AllItemsView.swift */; };
 		964D9F392935C48E00AA9B4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 964D9F382935C48E00AA9B4F /* Assets.xcassets */; };
@@ -17,7 +18,6 @@
 		967B6213293889290050CA3E /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B6212293889290050CA3E /* CustomColor.swift */; };
 		967B621B2938B3470050CA3E /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B621A2938B3470050CA3E /* SearchBarView.swift */; };
 		967B621D2938B3A40050CA3E /* DismissKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B621C2938B3A40050CA3E /* DismissKeyboard.swift */; };
-		969FD130295302210066078D /* CarBode in Frameworks */ = {isa = PBXBuildFile; productRef = 969FD12F295302210066078D /* CarBode */; };
 		969FD133295336540066078D /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969FD132295336540066078D /* ImagePicker.swift */; };
 		969FD139295447850066078D /* AddItemModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969FD138295447850066078D /* AddItemModalView.swift */; };
 		96A8CE2E29405276000BA342 /* AddItemTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8CE2D29405276000BA342 /* AddItemTestView.swift */; };
@@ -29,11 +29,13 @@
 		96E5B882296B1AC00038CB6A /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B881296B1AC00038CB6A /* OverlayView.swift */; };
 		96E5B884296B1F3D0038CB6A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B883296B1F3D0038CB6A /* MainView.swift */; };
 		96F9C46F297FDBD80048CBB6 /* TextfieldPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F9C46E297FDBD80048CBB6 /* TextfieldPlaceholder.swift */; };
+		96F9C472297FE7560048CBB6 /* SwiftPieChart in Frameworks */ = {isa = PBXBuildFile; productRef = 96F9C471297FE7560048CBB6 /* SwiftPieChart */; };
 		96FEE47D2979120600A4DD0B /* StartUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE47C2979120600A4DD0B /* StartUpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		961FFA3529796C9500554759 /* SegmentControlTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentControlTest.swift; sourceTree = "<group>"; };
+		9623929A298230BF0015A949 /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		964D9F312935C48D00AA9B4F /* Xpiry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Xpiry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		964D9F342935C48D00AA9B4F /* XpiryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XpiryApp.swift; sourceTree = "<group>"; };
 		964D9F362935C48D00AA9B4F /* AllItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllItemsView.swift; sourceTree = "<group>"; };
@@ -64,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				969FD130295302210066078D /* CarBode in Frameworks */,
+				96F9C472297FE7560048CBB6 /* SwiftPieChart in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +171,7 @@
 			children = (
 				967B621A2938B3470050CA3E /* SearchBarView.swift */,
 				96E5B881296B1AC00038CB6A /* OverlayView.swift */,
+				9623929A298230BF0015A949 /* ProgressViewStyle.swift */,
 			);
 			path = "Non-screen Views";
 			sourceTree = "<group>";
@@ -190,7 +193,7 @@
 			);
 			name = Xpiry;
 			packageProductDependencies = (
-				969FD12F295302210066078D /* CarBode */,
+				96F9C471297FE7560048CBB6 /* SwiftPieChart */,
 			);
 			productName = Xpiry;
 			productReference = 964D9F312935C48D00AA9B4F /* Xpiry.app */;
@@ -221,7 +224,7 @@
 			);
 			mainGroup = 964D9F282935C48D00AA9B4F;
 			packageReferences = (
-				969FD12E295302210066078D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */,
+				96F9C470297FE7560048CBB6 /* XCRemoteSwiftPackageReference "SwiftPieChart" */,
 			);
 			productRefGroup = 964D9F322935C48D00AA9B4F /* Products */;
 			projectDirPath = "";
@@ -265,6 +268,7 @@
 				96C59863297127DA00482208 /* UsageReportView.swift in Sources */,
 				961FFA3629796C9500554759 /* SegmentControlTest.swift in Sources */,
 				96E5B882296B1AC00038CB6A /* OverlayView.swift in Sources */,
+				9623929B298230BF0015A949 /* ProgressViewStyle.swift in Sources */,
 				96A8CE2E29405276000BA342 /* AddItemTestView.swift in Sources */,
 				964D9F412935C48E00AA9B4F /* Xpiry.xcdatamodeld in Sources */,
 				96FEE47D2979120600A4DD0B /* StartUpView.swift in Sources */,
@@ -475,21 +479,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		969FD12E295302210066078D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */ = {
+		96F9C470297FE7560048CBB6 /* XCRemoteSwiftPackageReference "SwiftPieChart" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/heart/CarBode-Barcode-Scanner-For-SwiftUI";
+			repositoryURL = "https://github.com/ilamanov/SwiftPieChart";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		969FD12F295302210066078D /* CarBode */ = {
+		96F9C471297FE7560048CBB6 /* SwiftPieChart */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 969FD12E295302210066078D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */;
-			productName = CarBode;
+			package = 96F9C470297FE7560048CBB6 /* XCRemoteSwiftPackageReference "SwiftPieChart" */;
+			productName = SwiftPieChart;
 		};
 /* End XCSwiftPackageProductDependency section */
 
