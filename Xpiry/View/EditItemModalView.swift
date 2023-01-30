@@ -25,7 +25,7 @@ struct EditItemModalView: View {
     @State private var scanPresented = false
     @State private var image: Data = .init(count: 0)
     @State private var selectedItems: [PhotosPickerItem] = []
-    @State private var overlay = false
+    @State private var stepperOverlay = false
     @State private var refresh = UUID()
     @State private var showTabBar = false
     @State private var showConsumeAlert = false
@@ -93,13 +93,6 @@ struct EditItemModalView: View {
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .padding(.bottom, 10)
-                            Button {
-                                overlay.toggle()
-                            } label: {
-                                Image(systemName: "info.circle")
-                                    .padding(.bottom, 10)
-                            }
-                            
                         }
                         TextField(item.name ?? " ", text: $name)
                             .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
@@ -225,6 +218,13 @@ struct EditItemModalView: View {
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .padding(.bottom, 10)
+                            Button {
+                                stepperOverlay.toggle()
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .padding(.bottom, 10)
+                            }
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             Spacer()
                         }
                         HStack {
@@ -423,6 +423,7 @@ struct EditItemModalView: View {
             }.padding(.top)
         }
         .preferredColorScheme(.light)
+        .overlay(secretOverlay)
         .toolbar(showTabBar ? .visible : .hidden, for: .tabBar)
         .navigationBarHidden(true)
         .navigationBarTitle("")
@@ -452,6 +453,16 @@ struct EditItemModalView: View {
     func remindBefore(_ days: Int) {
         if let date = Calendar.current.date(byAdding: .day, value: days, to: reminderDate) {
             self.reminderDate = date
+        }
+    }
+    
+    @ViewBuilder private var secretOverlay: some View {
+        ZStack{
+            if stepperOverlay {
+                StepperOverlayView().onTapGesture {
+                    stepperOverlay.toggle()
+                }
+            }
         }
     }
 }

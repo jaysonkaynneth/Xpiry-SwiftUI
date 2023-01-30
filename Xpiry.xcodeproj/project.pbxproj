@@ -26,6 +26,7 @@
 		96A8F84429764BAC000E5B80 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8F84329764BAC000E5B80 /* NotificationView.swift */; };
 		96C51781296B32E300FAAF51 /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C51780296B32E300FAAF51 /* ShoppingListView.swift */; };
 		96C59863297127DA00482208 /* UsageReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C59862297127DA00482208 /* UsageReportView.swift */; };
+		96D50122298829E80077F1F9 /* StepperOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D50121298829E80077F1F9 /* StepperOverlayView.swift */; };
 		96E5B882296B1AC00038CB6A /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B881296B1AC00038CB6A /* OverlayView.swift */; };
 		96E5B884296B1F3D0038CB6A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B883296B1F3D0038CB6A /* MainView.swift */; };
 		96F9C46F297FDBD80048CBB6 /* TextfieldPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F9C46E297FDBD80048CBB6 /* TextfieldPlaceholder.swift */; };
@@ -54,6 +55,7 @@
 		96A8F84329764BAC000E5B80 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		96C51780296B32E300FAAF51 /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		96C59862297127DA00482208 /* UsageReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageReportView.swift; sourceTree = "<group>"; };
+		96D50121298829E80077F1F9 /* StepperOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperOverlayView.swift; sourceTree = "<group>"; };
 		96E5B881296B1AC00038CB6A /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		96E5B883296B1F3D0038CB6A /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		96F9C46E297FDBD80048CBB6 /* TextfieldPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldPlaceholder.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				967B621A2938B3470050CA3E /* SearchBarView.swift */,
 				96E5B881296B1AC00038CB6A /* OverlayView.swift */,
 				9623929A298230BF0015A949 /* ProgressViewStyle.swift */,
+				96D50121298829E80077F1F9 /* StepperOverlayView.swift */,
 			);
 			path = "Non-screen Views";
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				964D9F3E2935C48E00AA9B4F /* Persistence.swift in Sources */,
 				96E5B884296B1F3D0038CB6A /* MainView.swift in Sources */,
 				964D9F372935C48D00AA9B4F /* AllItemsView.swift in Sources */,
+				96D50122298829E80077F1F9 /* StepperOverlayView.swift in Sources */,
 				96A8CE322940529E000BA342 /* AddSLModalView.swift in Sources */,
 				967B6213293889290050CA3E /* CustomColor.swift in Sources */,
 				96F9C46F297FDBD80048CBB6 /* TextfieldPlaceholder.swift in Sources */,

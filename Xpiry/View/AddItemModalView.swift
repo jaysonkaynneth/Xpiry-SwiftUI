@@ -110,7 +110,7 @@ struct AddItemModalView: View {
                             } label: {
                                 Image(systemName: "info.circle")
                                     .padding(.bottom, 10)
-                            }
+                            }.tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                             
                         }
                         TextField("", text: $name)
