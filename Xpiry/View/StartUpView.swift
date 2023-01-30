@@ -30,6 +30,7 @@ struct StartUpView: View {
             }.padding(.leading)
             ZStack {
                 TextField("", text: $userName)
+                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                     .padding(.horizontal)
                     .background(
                         RoundedRectangle(cornerRadius: 20)
@@ -52,6 +53,7 @@ struct StartUpView: View {
                         .foregroundColor(.white)
                 }
             }
+            .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
             .disabled(userName.isEmpty)
             .actionSheet(isPresented: $showAlert) {
                 ActionSheet(title: Text("Are you sure?"),
@@ -80,6 +82,7 @@ struct StartUpView: View {
                 )
             }
         }
+        .preferredColorScheme(.light)
     }
 }
 

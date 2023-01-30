@@ -28,21 +28,11 @@ struct MainView: View {
                 Label("Usage Report", systemImage: "chart.pie")
             }
         }
-        .onAppear(perform: notifRequest)
+        .preferredColorScheme(.light)
         .fullScreenCover(isPresented: $showStartUp, content: {
                 StartUpView(showStartUp: $showStartUp)
             })
         .tint(.white)
-    }
-    
-    func notifRequest() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                print("Success")
-            } else if let error = error {
-                print(error.localizedDescription)
-            }
-        }
     }
 }
 

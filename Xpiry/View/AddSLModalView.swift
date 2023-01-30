@@ -6,102 +6,182 @@
 //
 
 import SwiftUI
+import CoreData
 import Combine
 import AVFoundation
-import CarBode
 
 struct AddSLModalView: View {
-    
     @Environment(\.presentationMode) var presentationMode
-    
     @Environment(\.managedObjectContext) var moc
+    
     @Binding var showModal: Bool
+    
     @State private var itemName: String = ""
     @State private var itemStock: String = ""
+    @State private var productName = [String]()
+    @State private var productStock = [Int16]()
+    @State private var showAlert = false
     
     var body: some View {
-        NavigationView {
-            VStack {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Item Name")
+        VStack {
+            Text("Item Name")
+                .font(.system(size: 18, design: .rounded))
+                .bold()
+                .padding()
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Item Name")
+                        .font(.system(size: 18, design: .rounded))
+                        .bold()
+                        .padding(.bottom, 10)
+                }
+                
+                TextField("", text: $itemName)
+                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                    .padding(.leading, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .strokeBorder(.black)
+                            .foregroundColor(.clear)
+                            .frame(height: 35)
+                    ).padding(.bottom)
+                
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Quantity")
                             .font(.system(size: 18, design: .rounded))
                             .bold()
                             .padding(.bottom, 10)
-                    }
-                    
-                    TextField("", text: $itemName)
-                        .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
-                        .padding(.leading, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .strokeBorder(.black)
-                                .foregroundColor(.clear)
-                                .frame(height: 35)
-                        ).padding(.bottom)
-                    
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("Quantity")
-                                .font(.system(size: 18, design: .rounded))
-                                .bold()
-                                .padding(.bottom, 10)
-                            
-                            TextField("", text: $itemStock)
-                                .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
-                                .keyboardType(.numberPad)
-                                .onReceive(Just(itemStock)) { input in
-                                    let filtered = input.filter { "0123456789".contains($0) }
-                                    if filtered != input {
-                                        self.itemStock = filtered
-                                    }
-                                }
-                                .frame(width: 80)
-                                .fixedSize(horizontal: true, vertical: false)
-                                .padding(.leading, 10)
-                                .padding(.trailing, 10)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .strokeBorder(.black)
-                                        .foregroundColor(.clear)
-                                        .frame(height: 35)
-                                )
-                        }
-                        Spacer()
-                    }
-                }.padding()
-                
-                Spacer()
-                
-                Button {
-                    let sItem = ShoppingItem(context: moc)
-                    sItem.name = (itemName)
-                    sItem.stock = Int16(itemStock) ?? Int16("")!
-
-                    presentationMode.wrappedValue.dismiss()
-                    try? moc.save()
-                    print(sItem.name!)
-                    print(sItem.stock)
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 35)
-                            .frame(width: 200, height: 60)
                         
-                        Text("Save")
-                            .font(.system(size: 18, design: .rounded))
-                            .foregroundColor(.white)
+                        TextField("", text: $itemStock)
+                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                            .keyboardType(.numberPad)
+                            .onReceive(Just(itemStock)) { input in
+                                let filtered = input.filter { "0123456789".contains($0) }
+                                if filtered != input {
+                                    self.itemStock = filtered
+                                }
+                            }
+                            .frame(width: 80)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .padding(.leading, 10)
+                            .padding(.trailing, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(.black)
+                                    .foregroundColor(.clear)
+                                    .frame(height: 35)
+                            )
                     }
+                    Spacer()
                 }
-                .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
-                .disabled(itemName.isEmpty || itemStock.isEmpty)
-            }.navigationTitle(Text("Add an Item"))
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-      
+                
+            }.padding()
+            
+            Spacer()
+            
+   
+            Button {
+                
+                
+                var fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "name LIKE [c] %@ AND stock > 5", itemName)
+                
+                do
+                {
+                    let items = try moc.fetch(fetchRequest)
+                    
+                    guard items.isEmpty
+                    else {
+                        showAlert = true
+                        return
+                    }
+                    
+                    let shoppingFetchRequest: NSFetchRequest<ShoppingItem> = ShoppingItem.fetchRequest()
+                    shoppingFetchRequest.predicate = NSPredicate(format: "name LIKE [c] %@", itemName)
+                    
+                    let shoppingItem = try moc.fetch(shoppingFetchRequest)
+                    
+                    if shoppingItem.isEmpty {
+                        let sItem = ShoppingItem(context: moc)
+                        sItem.name = (itemName)
+                        sItem.stock = Int16(itemStock) ?? 0
+                    }
+                    else {
+                        let item = shoppingItem[0]
+                        item.stock += Int16(itemStock) ?? 0
+                    }
+                    
+                    presentationMode.wrappedValue.dismiss()
+                    
+                    try? moc.save()
+                }
+                catch
+                {
+                    print(error.localizedDescription)
+                }
+                
+                
+            }label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 35)
+                        .frame(width: 200, height: 60)
+                    
+                    Text("Save")
+                        .font(.system(size: 18, design: .rounded))
+                        .foregroundColor(.white)
                 }
             }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("You already have that item!"),
+                    message: Text("Are you sure you want to buy it again?"),
+                    primaryButton: .destructive(Text("Yes"), action: {
+                        let sItem = ShoppingItem(context: moc)
+                        sItem.name = (itemName)
+                        sItem.stock = Int16(itemStock) ?? Int16("")!
+                        presentationMode.wrappedValue.dismiss()
+                    }),
+                    secondaryButton: .cancel(Text("No"), action: {
+                        let sItem = ShoppingItem(context: moc)
+                        let deleteObject = sItem
+                        self.moc.delete(deleteObject)
+                        showAlert = false
+                    })
+                )
+            }
+    //            .actionSheet(isPresented: $showAlert) {
+    //                ActionSheet(title: Text("You already have that item!"),
+    //                            message: Text("Are you sure you want to buy it again?"),
+    //                            buttons: [
+    //                                .cancel(),
+    //                                .default(
+    //                                    Text("Yes"),
+    //                                    action: {
+    //                                        let sItem = ShoppingItem(context: moc)
+    //                                        sItem.name = (itemName)
+    //                                        sItem.stock = Int16(itemStock) ?? Int16("")!
+    //
+    //                                        try? moc.save()
+    //
+    //                                        presentationMode.wrappedValue.dismiss()
+    //                                        print(sItem.name!)
+    //                                        print(sItem.stock)
+    //                                    }),
+    //                                .destructive(
+    //                                    Text("No"),
+    //                                    action: {
+    //                                        showAlert = false
+    //                                    }
+    //                                )
+    //                            ]
+    //                )
+    //            }
+            .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+            .disabled(itemName.isEmpty || itemStock.isEmpty || Int(itemStock) ?? 0 == 0)
+
         }
+        .preferredColorScheme(.light)
     }
 }
 

@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import PhotosUI
+import CoreData
 
 struct EditItemModalView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -17,6 +18,7 @@ struct EditItemModalView: View {
     
     @State private var name: String = ""
     @State private var expiryDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
+    @State private var reminderDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
     @State private var stock: String = ""
     @State private var reminder: String = ""
     @State private var note: String = ""
@@ -29,7 +31,8 @@ struct EditItemModalView: View {
     @State private var showConsumeAlert = false
     @State private var showWasteAlert = false
     @State private var stockAlert = false
-
+    @State private var quantity = 0
+    
     
     
     var body: some View {
@@ -206,239 +209,107 @@ struct EditItemModalView: View {
                                     .strokeBorder(.black)
                                     .foregroundColor(.clear)
                                     .frame(height: 35)
-                                )
+                            )
                     }
                     Spacer()
-                }.padding()
+                }
+                .padding(.top)
+                .padding(.horizontal)
                 
                 Spacer()
+                
                 HStack {
-                    Button {
-                        showConsumeAlert = true
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 35)
-                                .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
-                                .frame(width: 150, height: 60)
-                            
-                            Text("Consumed")
+                    VStack {
+                        HStack {
+                            Text("Product Usage")
                                 .font(.system(size: 18, design: .rounded))
-                                .foregroundColor(.white)
+                                .bold()
+                                .padding(.bottom, 10)
+                            Spacer()
                         }
-                    }
-                    .alert("You are out of stock!", isPresented: $stockAlert) {
-                        Button("OK", role: .cancel) { }
-                    }
-                    .confirmationDialog(" ", isPresented: $showConsumeAlert, titleVisibility: .visible) {
-                        Button("Consume 1") {
-                            showTabBar.toggle()
+                        HStack {
+                            Stepper("", value: $quantity, in: 0...Int(item.stock))
+                            Text("\(quantity)")
                             
-                            item.name = item.name
-                            item.expiry = item.expiry
-                            item.image = item.image
-                            item.reminder = item.reminder
-                            item.note = item.note
-                            if Date() >= expiryDate {
-                                item.expired = true
-                            } else {
-                                item.expired = false
-                            }
-                            
-                            if item.stock >= 1 {
-                                item.stock -= 1
-                                consume()
-                            } else {
-                                stockAlert = true
-                            }
-                    
-                            presentationMode.wrappedValue.dismiss()
-                            try! moc.save()
-                            
-                            print(item.stock)
-                        }
-                        
-                        Button("Consume 5") {
-                            showTabBar.toggle()
-                         
-                            if item.stock >= 5 {
-                                for _ in 1...5{
-                                    consume()
-                                }
+                            Button {
+                                showTabBar.toggle()
                                 
-                            } else if item.stock == 0 {
-                                stockAlert = true
-                                
-                            } else {
-                                for _ in 1...item.stock{
-                                    consume()
+                                    for _ in 1...quantity {
+                                        consume()
+                                    }
+                               
+                                item.name = item.name
+                                item.expiry = item.expiry
+                                item.image = item.image
+                                item.reminder = item.reminder
+                                item.note = item.note
+                                if Date() >= expiryDate {
+                                    item.expired = true
+                                } else {
+                                    item.expired = false
                                 }
-                            }
-                            
-                            item.name = item.name
-                            item.expiry = item.expiry
-                            item.image = item.image
-                            item.reminder = item.reminder
-                            item.note = item.note
-                            if Date() >= expiryDate {
-                                item.expired = true
-                            } else {
-                                item.expired = false
-                            }
-                            
-                            if item.stock >= 5 {
-                                item.stock -= 5
-                            } else {
-                                item.stock -= item.stock
-                            }
-                            presentationMode.wrappedValue.dismiss()
+                                item.stock -= Int16(quantity)
+                                
+                                presentationMode.wrappedValue.dismiss()
+                                
                                 try! moc.save()
-                                      
-                            print(item.stock)
-                        }
-                        
-                        Button("Consume All") {
-                            showTabBar.toggle()
-                            
-                            if item.stock > 0 {
-                                for _ in 1...item.stock {
-                                    consume()
+                                
+                                print(item.stock)
+                                
+                            } label: {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 35)
+                                        .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+                                        .frame(width: 100, height: 40)
+                                    
+                                    Text("Consumed")
+                                        .font(.system(size: 18, design: .rounded))
+                                        .foregroundColor(.white)
                                 }
-                            } else {
-                                stockAlert = true
-                            }
+                            }.disabled(item.stock == 0 || quantity == 0)
                             
-                            item.name = item.name
-                            item.expiry = item.expiry
-                            item.image = item.image
-                            item.reminder = item.reminder
-                            item.note = item.note
-                            if Date() >= expiryDate {
-                                item.expired = true
-                            } else {
-                                item.expired = false
-                            }
-                            item.stock -= item.stock
-                            
-                            presentationMode.wrappedValue.dismiss()
-                            
-                            try! moc.save()
-                            
-                            print(item.stock)
+                            Button {
+                                showTabBar.toggle()
+                                
+                                    for _ in 1...quantity {
+                                        waste()
+                                    }
+                               
+                                item.name = item.name
+                                item.expiry = item.expiry
+                                item.image = item.image
+                                item.reminder = item.reminder
+                                item.note = item.note
+                                if Date() >= expiryDate {
+                                    item.expired = true
+                                } else {
+                                    item.expired = false
+                                }
+                                item.stock -= Int16(quantity)
+                                
+                                presentationMode.wrappedValue.dismiss()
+                                
+                                try! moc.save()
+                                
+                                print(item.stock)
+                            } label: {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 35)
+                                        .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
+                                        .frame(width: 100, height: 40)
+                                    
+                                    Text("Wasted")
+                                        .font(.system(size: 18, design: .rounded))
+                                        .foregroundColor(.white)
+                                }
+                            }.disabled(item.stock == 0 || quantity == 0)
+                            Spacer()
                         }
                     }
                     Spacer()
-                    Button {
-                        showWasteAlert = true
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 35)
-                                .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-                                .frame(width: 150, height: 60)
-                            
-                            Text("Wasted")
-                                .font(.system(size: 18, design: .rounded))
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .confirmationDialog(" ", isPresented: $showWasteAlert, titleVisibility: .visible) {
-                        Button("Waste 1") {
-                            showTabBar.toggle()
-                            
-                            item.name = item.name
-                            item.expiry = item.expiry
-                            item.image = item.image
-                            item.reminder = item.reminder
-                            item.note = item.note
-                            if Date() >= expiryDate {
-                                item.expired = true
-                            } else {
-                                item.expired = false
-                            }
-                            
-                            if item.stock >= 1 {
-                                item.stock -= 1
-                                waste()
-                            } else {
-                                stockAlert = true
-                            }
-                          
-                            presentationMode.wrappedValue.dismiss()
-                            try! moc.save()
-                            
-                            print(item.stock)
-                        }
-                        
-                        Button("Waste 5") {
-                            showTabBar.toggle()
-                    
-                            if item.stock >= 5 {
-                                for _ in 1...5{
-                                    waste()
-                                }
-                                
-                            } else if item.stock == 0 {
-                                stockAlert = true
-                                
-                            } else {
-                                for _ in 1...item.stock{
-                                    waste()
-                                }
-                            }
-                            
-                            item.name = item.name
-                            item.expiry = item.expiry
-                            item.image = item.image
-                            item.reminder = item.reminder
-                            item.note = item.note
-                            if Date() >= expiryDate {
-                                item.expired = true
-                            } else {
-                                item.expired = false
-                            }
-                            
-                            if item.stock >= 5 {
-                                item.stock -= 5
-                            } else {
-                                item.stock -= item.stock
-                            }
-                            
-                            presentationMode.wrappedValue.dismiss()
-                            try! moc.save()
-                            
-                            print(item.stock)
-                        }
-                        
-                        Button("Waste All") {
-                            showTabBar.toggle()
-                            
-                            if item.stock > 0 {
-                                for _ in 1...item.stock {
-                                    waste()
-                                }
-                            } else {
-                                stockAlert = true
-                            }
-                            
-                            item.name = item.name
-                            item.expiry = item.expiry
-                            item.image = item.image
-                            item.reminder = item.reminder
-                            item.note = item.note
-                            if Date() >= expiryDate {
-                                item.expired = true
-                            } else {
-                                item.expired = false
-                            }
-                            item.stock -= item.stock
-                            
-                            presentationMode.wrappedValue.dismiss()
-                            
-                            try! moc.save()
-                            
-                            print(item.stock)
-                        }
-                    }
-                }.padding(.horizontal)
+                }
+                .padding(.top)
+                .padding(.horizontal)
                 
                 Button {
                     showTabBar.toggle()
@@ -453,13 +324,13 @@ struct EditItemModalView: View {
                     if stock.isEmpty {
                         item.stock = item.stock
                     } else if !stock.isEmpty {
-                        item.stock = Int16(stock) ?? Int16("")!
+                        item.stock = Int16(stock) ?? 0
                     }
                     
                     if reminder.isEmpty {
                         item.reminder = item.reminder
                     } else if !reminder.isEmpty {
-                        item.reminder = Int16(reminder) ?? Int16("")!
+                        item.reminder = Int16(reminder) ?? 0
                     }
                     
                     if note.isEmpty {
@@ -491,6 +362,50 @@ struct EditItemModalView: View {
                     
                     self.name = ""
                     self.image.count = 0
+                    
+                    let userFetchRequest: NSFetchRequest<User> = User.fetchRequest()
+                    
+                    do {
+                        let user = try moc.fetch(userFetchRequest)
+                        let users = user[0]
+                        let content = UNMutableNotificationContent()
+                        print(users.name ?? "")
+                        content.title = "Item is about to expire!"
+                        content.subtitle = "\(users.name ?? "")! your \(item.name ?? "") is gonna expire, better use it soon!"
+                        content.sound = UNNotificationSound.default
+                        
+                        let dateComponent = Calendar.current.dateComponents([.month, .day, .hour], from: expiryDate)
+                        
+                        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
+                        
+                        print("REMINDER SET TO:\(dateComponent)")
+                        
+                        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                        
+                        UNUserNotificationCenter.current().add(request)
+                        
+                        self.reminderDate = expiryDate
+                        remindBefore(-Int(item.reminder))
+                        
+                        let remContent = UNMutableNotificationContent()
+                        print(users.name ?? "")
+                        remContent.title = "Item is about to expire!"
+                        remContent.subtitle = "\(users.name ?? "")! your \(item.name ?? "") is gonna expire in \(item.reminder) day(s)!"
+                        remContent.sound = UNNotificationSound.default
+                        
+                        let remDateComp = Calendar.current.dateComponents([.month, .day, .hour], from: reminderDate)
+                        
+                        let remTrigger = UNCalendarNotificationTrigger(dateMatching: remDateComp, repeats: false)
+                        
+                        print("REMBEFORE SET TO:\(remDateComp)")
+                        
+                        let remRequest = UNNotificationRequest(identifier: UUID().uuidString, content: remContent, trigger: remTrigger)
+                        
+                        UNUserNotificationCenter.current().add(remRequest)
+                    }
+                    catch {
+                        print(error.localizedDescription)
+                    }
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 35)
@@ -507,6 +422,7 @@ struct EditItemModalView: View {
                 
             }.padding(.top)
         }
+        .preferredColorScheme(.light)
         .toolbar(showTabBar ? .visible : .hidden, for: .tabBar)
         .navigationBarHidden(true)
         .navigationBarTitle("")
@@ -531,5 +447,11 @@ struct EditItemModalView: View {
         let waste = Waste(context: moc)
         
         waste.wasted += 1
+    }
+    
+    func remindBefore(_ days: Int) {
+        if let date = Calendar.current.date(byAdding: .day, value: days, to: reminderDate) {
+            self.reminderDate = date
+        }
     }
 }

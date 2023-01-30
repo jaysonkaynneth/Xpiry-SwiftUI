@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import PhotosUI
+import CoreData
 
 struct AddItemModalView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -15,6 +16,7 @@ struct AddItemModalView: View {
     
     @State private var name: String = ""
     @State private var expiryDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
+    @State private var reminderDate = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
     @State private var stock: String = ""
     @State private var reminder: String = ""
     @State private var note: String = ""
@@ -22,6 +24,7 @@ struct AddItemModalView: View {
     @State private var image: Data = .init(count: 0)
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var overlay = false
+    @State private var notifAllowed = false
     
     var body: some View {
         ZStack {
@@ -47,8 +50,8 @@ struct AddItemModalView: View {
                                     .shadow(radius: 5)
                                     .clipShape(Circle())
                                     .overlay(
-                                      Circle()
-                                          .strokeBorder(.black)
+                                        Circle()
+                                            .strokeBorder(.black)
                                     )
                             }
                         } else {
@@ -60,8 +63,8 @@ struct AddItemModalView: View {
                                 .foregroundColor(.gray)
                                 .clipShape(Circle())
                                 .overlay(
-                                  Circle()
-                                      .strokeBorder(.black)
+                                    Circle()
+                                        .strokeBorder(.black)
                                 )
                             
                         }
@@ -75,25 +78,25 @@ struct AddItemModalView: View {
                         .padding(.leading)
                 }.padding(.horizontal)
                 
-                .onChange(of: selectedItems) { new in
-                    guard let items = selectedItems.first else { return
+                    .onChange(of: selectedItems) { new in
+                        guard let items = selectedItems.first else { return
+                            
+                        }
+                        
+                        items.loadTransferable(type: Data.self) { result in
+                            switch result {
+                            case .success(let data):
+                                if let data = data {
+                                    self.image = data
+                                } else {
+                                    print("No data :(")
+                                }
+                            case .failure(let error):
+                                fatalError("\(error)")
+                            }
+                        }
                         
                     }
-                    
-                    items.loadTransferable(type: Data.self) { result in
-                        switch result {
-                        case .success(let data):
-                            if let data = data {
-                                self.image = data
-                            } else {
-                                print("No data :(")
-                            }
-                        case .failure(let error):
-                            fatalError("\(error)")
-                        }
-                    }
-                    
-                }
                 
                 HStack {
                     VStack(alignment: .leading) {
@@ -108,7 +111,7 @@ struct AddItemModalView: View {
                                 Image(systemName: "info.circle")
                                     .padding(.bottom, 10)
                             }
-                         
+                            
                         }
                         TextField("", text: $name)
                             .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
@@ -126,13 +129,13 @@ struct AddItemModalView: View {
                 .padding(.top)
                 
                 HStack {
-                        DatePicker(selection: $expiryDate, displayedComponents: .date) {
-                            Text("Expiry Date")
-                                .font(.system(size: 18, design: .rounded))
-                                .bold()
-                        }
-                        .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
-                       
+                    DatePicker(selection: $expiryDate, displayedComponents: .date) {
+                        Text("Expiry Date")
+                            .font(.system(size: 18, design: .rounded))
+                            .bold()
+                    }
+                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                    
                 }.padding()
                 
                 HStack {
@@ -219,54 +222,104 @@ struct AddItemModalView: View {
                                     .strokeBorder(.black)
                                     .foregroundColor(.clear)
                                     .frame(height: 35)
-                                )
+                            )
                     }
                     Spacer()
                 }.padding()
                 
-                   Spacer()
+                Spacer()
                 
-                    Button {
-                        let product = Item(context: moc)
-                   
-                        product.name = (name)
-                        product.expiry = (expiryDate)
-                        product.image = (image)
-                        product.stock = Int16(stock) ?? Int16("")!
-                        product.reminder = Int16(reminder) ?? Int16("")!
-                        product.note = (note)
-                        if Date() >= expiryDate {
-                            product.expired = true
-                        } else {
-                            product.expired = false
-                        }
-                        
-                        try! moc.save()
-                        presentationMode.wrappedValue.dismiss()
-                        print(product.name!)
-                        print(product.expiry!)
-                        print(product.stock)
-                        print(product.reminder)
-                        print(product.expired)
-                        
-                        self.name = ""
-                        self.image.count = 0
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 35)
-                                .frame(width: 200, height: 60)
-                            
-                            Text("Save")
-                                .font(.system(size: 18, design: .rounded))
-                                .foregroundColor(.white)
-                        }
+                Button {
+                    let product = Item(context: moc)
+                    
+                    product.name = (name)
+                    product.expiry = (expiryDate)
+                    product.image = (image)
+                    product.stock = Int16(stock) ?? 0
+                    product.reminder = Int16(reminder) ?? 0
+                    product.note = (note)
+                    if Date() >= expiryDate {
+                        product.expired = true
+                    } else {
+                        product.expired = false
                     }
-                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
-                    .padding()
-                    .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty || image.isEmpty)
+                    
+                    try! moc.save()
+                    presentationMode.wrappedValue.dismiss()
+                    print(product.name!)
+                    print(product.expiry!)
+                    print(product.stock)
+                    print(product.reminder)
+                    print(product.expired)
+                    
+                    self.reminderDate = expiryDate
+                    self.name = ""
+                    self.image.count = 0
+                    
+                    notifRequest()
+                    
+                    let userFetchRequest: NSFetchRequest<User> = User.fetchRequest()
+                    
+                 do {
+                     let user = try moc.fetch(userFetchRequest)
+                     let users = user[0]
+                     let content = UNMutableNotificationContent()
+                     print(users.name ?? "")
+                     content.title = "Item is about to expire!"
+                     content.subtitle = "\(users.name ?? "")! your \(product.name ?? "") is gonna expire, better use it soon!"
+                     content.sound = UNNotificationSound.default
+                     
+                     let dateComponent = Calendar.current.dateComponents([.month, .day, .hour], from: expiryDate)
+                     
+                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
+                     
+                     print("REMINDER SET TO:\(dateComponent)")
+                     
+                     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                     
+                     UNUserNotificationCenter.current().add(request)
+                     
+                     self.reminderDate = expiryDate
+                     remindBefore(-Int(product.reminder))
+                     
+                     let remContent = UNMutableNotificationContent()
+                     print(users.name ?? "")
+                     remContent.title = "Item is about to expire!"
+                     remContent.subtitle = "\(users.name ?? "")! your \(product.name ?? "") is gonna expire in \(product.reminder) day(s)!"
+                     remContent.sound = UNNotificationSound.default
+                     
+                     let remDateComp = Calendar.current.dateComponents([.month, .day, .hour], from: reminderDate)
+                     
+                     let remTrigger = UNCalendarNotificationTrigger(dateMatching: remDateComp, repeats: false)
+                     
+                     print("REMBEFORE SET TO:\(remDateComp)")
+                     
+                     let remRequest = UNNotificationRequest(identifier: UUID().uuidString, content: remContent, trigger: remTrigger)
+                     
+                     UNUserNotificationCenter.current().add(remRequest)
+                 }
+                    catch {
+                        print(error.localizedDescription)
+                    }
+                    
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 35)
+                            .frame(width: 200, height: 60)
+                        
+                        Text("Save")
+                            .font(.system(size: 18, design: .rounded))
+                            .foregroundColor(.white)
+                    }
+                }
+                .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                .padding()
+                .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty || image.isEmpty)
             }.padding(.top)
-        }  .overlay(secretOverlay)
-            .onTapGesture {
+        }
+        .preferredColorScheme(.light)
+        .overlay(secretOverlay)
+        .onTapGesture {
                 self.endTextEditing()
             }
     }
@@ -279,6 +332,22 @@ struct AddItemModalView: View {
                     overlay.toggle()
                 }
             }
+        }
+    }
+    
+    func notifRequest() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("Success")
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func remindBefore(_ days: Int) {
+        if let date = Calendar.current.date(byAdding: .day, value: days, to: reminderDate) {
+            self.reminderDate = date
         }
     }
 }

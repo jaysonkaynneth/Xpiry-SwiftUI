@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftPieChart
 
 struct UsageReportView: View {
     
@@ -37,8 +36,9 @@ struct UsageReportView: View {
                         .padding(.leading)
                     Spacer()
                     
-                }.padding(.bottom)
-                    .padding(.trailing)
+                }
+                .padding(.bottom)
+                .padding(.trailing)
             }
             List {
                 
@@ -85,10 +85,18 @@ struct UsageReportView: View {
                                 .foregroundColor(.white)
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
-                            Text("\(consumeFormat)%")
-                                .foregroundColor(.white)
-                                .font(.system(size: 18, design: .rounded))
-                                .bold()
+                            
+                            if consumeFormat == "nan" {
+                                Text("0%")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, design: .rounded))
+                                    .bold()
+                            } else {
+                                Text("\(consumeFormat)%")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, design: .rounded))
+                                    .bold()
+                            }
                             
                             Spacer()
                             
@@ -96,10 +104,18 @@ struct UsageReportView: View {
                                 .foregroundColor(.white)
                                 .font(.system(size: 17, design: .rounded))
                                 .bold()
-                            Text("\(wasteFormat)%")
-                                .foregroundColor(.white)
-                                .font(.system(size: 18, design: .rounded))
-                                .bold()
+                            
+                            if wasteFormat == "nan" {
+                                Text("0%")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, design: .rounded))
+                                    .bold()
+                            } else {
+                                Text("\(wasteFormat)%")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, design: .rounded))
+                                    .bold()
+                            }
                             
                         }.padding(.horizontal)
                     }
@@ -145,6 +161,7 @@ struct UsageReportView: View {
                 
             }
         }
+        .preferredColorScheme(.light)
         .ignoresSafeArea()
         .onAppear {
             self.barValue = Float(consumes.count)/Float(wastes.count + consumes.count) * 100/100

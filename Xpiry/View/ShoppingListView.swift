@@ -106,7 +106,6 @@ struct ShoppingListView: View {
                     }.onDelete(perform: deleteItems)
                     
                 }.listStyle(.inset)
-                    .padding(.top, 25)
                 
             } else if completeType == "Done" {
                 List {
@@ -130,7 +129,6 @@ struct ShoppingListView: View {
                     }.onDelete(perform: deleteItems)
                     
                 }.listStyle(.inset)
-                    .padding(.top, 25)
                 
             } else {
                 List {
@@ -165,7 +163,9 @@ struct ShoppingListView: View {
                 
             }
             
-        }.ignoresSafeArea()
+        }
+        .preferredColorScheme(.light)
+        .ignoresSafeArea()
     }
     
     private func deleteItems(offsets: IndexSet) {

@@ -22,6 +22,7 @@ struct SearchBarView: View {
                         .foregroundColor(.gray)
                 }
                 TextField("", text: $searchText)
+                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
                     .foregroundColor(.black)
                     .autocorrectionDisabled(true)
             }
