@@ -25,36 +25,32 @@ struct AddSLModalView: View {
     var body: some View {
         VStack {
             Text("Item Name")
-                .font(.system(size: 18, design: .rounded))
-                .bold()
+                .font(Font.custom("DMSans-Bold", size: 18))
                 .padding()
             VStack(alignment: .leading) {
                 HStack {
                     Text("Item Name")
-                        .font(.system(size: 18, design: .rounded))
-                        .bold()
+                        .font(Font.custom("DMSans-Medium", size: 18))
                         .padding(.bottom, 10)
                 }
                 
                 TextField("", text: $itemName)
-                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                    .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                     .padding(.leading, 10)
                     .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .strokeBorder(.black)
-                            .foregroundColor(.clear)
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color(red: 240/255, green: 240/255, blue: 240/255))
                             .frame(height: 35)
                     ).padding(.bottom)
                 
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Quantity")
-                            .font(.system(size: 18, design: .rounded))
-                            .bold()
+                            .font(Font.custom("DMSans-Medium", size: 18))
                             .padding(.bottom, 10)
                         
                         TextField("", text: $itemStock)
-                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                            .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                             .keyboardType(.numberPad)
                             .onReceive(Just(itemStock)) { input in
                                 let filtered = input.filter { "0123456789".contains($0) }
@@ -67,9 +63,8 @@ struct AddSLModalView: View {
                             .padding(.leading, 10)
                             .padding(.trailing, 10)
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(.black)
-                                    .foregroundColor(.clear)
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(red: 240/255, green: 240/255, blue: 240/255))
                                     .frame(height: 35)
                             )
                     }
@@ -84,7 +79,7 @@ struct AddSLModalView: View {
             Button {
                 
                 
-                var fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+                let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
                 fetchRequest.predicate = NSPredicate(format: "name LIKE [c] %@ AND stock > 5", itemName)
                 
                 do
@@ -128,8 +123,8 @@ struct AddSLModalView: View {
                         .frame(width: 200, height: 60)
                     
                     Text("Save")
-                        .font(.system(size: 18, design: .rounded))
-                        .foregroundColor(.white)
+                        .font(Font.custom("DMSans-Medium", size: 18))
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                 }
             }
             .alert(isPresented: $showAlert) {
@@ -177,15 +172,16 @@ struct AddSLModalView: View {
     //                            ]
     //                )
     //            }
-            .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+            .foregroundColor(Color(red: 33/255, green: 177/255, blue: 108/255))
             .disabled(itemName.isEmpty || itemStock.isEmpty || Int(itemStock) ?? 0 == 0)
 
         }
+        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
         .preferredColorScheme(.light)
     }
 }
 
-struct ScannerModalView_Previews: PreviewProvider {
+struct AddSLModalView_Previews: PreviewProvider {
     static var previews: some View {
         AddSLModalView(showModal: .constant(true))
     }

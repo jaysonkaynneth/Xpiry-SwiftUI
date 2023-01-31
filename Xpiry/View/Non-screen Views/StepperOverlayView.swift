@@ -22,7 +22,7 @@ struct StepperOverlayView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .frame(width: 230, height: 60)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
         
                     Text("Tap and hold on the + or -")
                 }

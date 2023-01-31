@@ -24,54 +24,64 @@ struct UsageReportView: View {
     var body: some View {
         VStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                Rectangle()
                     .frame(height: 150)
-                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                    .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
                 
                 HStack {
                     Text("Product Usage Report")
-                        .foregroundColor(.white)
-                        .font(.system(size: 25, design: .rounded))
+                        .font(Font.custom("DMSans-Bold", size: 30))
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                         .bold()
+                        .padding(.top, 35)
                         .padding(.leading)
                     Spacer()
                     
                 }
-                .padding(.bottom)
-                .padding(.trailing)
+               
+              
             }
             List {
                 
                 ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
+                    RoundedRectangle(cornerRadius: 24)
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                        .shadow(radius: 5, x: 0, y: 4)
                         .frame(height: 95)
+                        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                     HStack {
                         Text("Products Consumed")
+                            .font(Font.custom("DMSans-Medium", size: 18))
                         Spacer()
                         Text(String(consumes.count))
+                            .font(Font.custom("DMSans-Regular", size: 18))
                             .padding()
                     }.padding(.horizontal)
-                }
+                }  .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
                 
                 ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .foregroundColor(.white)
-                        .shadow(radius: 5)
+                    RoundedRectangle(cornerRadius: 24)
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                        .shadow(radius: 5, x: 0, y: 4)
                         .frame(height: 95)
+                        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                     HStack {
                         Text("Products Wasted")
+                            .font(Font.custom("DMSans-Medium", size: 18))
                         Spacer()
                         Text(String(wastes.count))
+                            .font(Font.custom("DMSans-Regular", size: 18))
                             .padding()
                     }.padding(.horizontal)
                 }.listRowSeparator(.hidden)
+                    .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
                 
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 24)
                         .frame(height: 150)
-                        .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                        .shadow(radius: 5, x: 0, y: 4)
+                        .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
+                        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                     VStack {
                         ProgressView(value: barValue, total: 100/100)
                             .progressViewStyle(RoundedRectProgressViewStyle())
@@ -82,63 +92,68 @@ struct UsageReportView: View {
                             let consumeFormat = String(format: "%.1f", consumePercent)
                             
                             Text("Consumed")
-                                .foregroundColor(.white)
-                                .font(.system(size: 18, design: .rounded))
+                                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                .font(Font.custom("DMSans-Medium", size: 18))
                                 .bold()
                             
                             if consumeFormat == "nan" {
                                 Text("0%")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 18, design: .rounded))
+                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             } else {
                                 Text("\(consumeFormat)%")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 18, design: .rounded))
+                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             }
                             
                             Spacer()
                             
                             Text("Wasted")
-                                .foregroundColor(.white)
-                                .font(.system(size: 17, design: .rounded))
+                                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                .font(Font.custom("DMSans-Medium", size: 18))
                                 .bold()
                             
                             if wasteFormat == "nan" {
                                 Text("0%")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 18, design: .rounded))
+                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             } else {
                                 Text("\(wasteFormat)%")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 18, design: .rounded))
+                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             }
                             
                         }.padding(.horizontal)
                     }
                 } .listRowSeparator(.hidden)
+                    .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
                 
 
                 
                 ZStack {
                     if wastes.count > consumes.count || wastes.count == consumes.count{
                         Text("Please waste less products!")
-                            .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
-                            .font(.system(size: 25, design: .rounded))
+                            .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
+                            .font(Font.custom("DMSans-Medium", size: 24))
                             .bold()
+                            .padding(.leading)
+                            .padding(.top, 5)
                         
                     } else {
                         Text("You're doing great!")
-                            .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
-                            .font(.system(size: 25, design: .rounded))
+                            .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
+                            .font(Font.custom("DMSans-Medium", size: 24))
                             .bold()
+                            .padding(.leading, 60)
+                            .padding(.top, 5)
                         
                     }
                 }
-                .padding(.leading)
+                .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
                 .listRowSeparator(.hidden)
                 //                PieChartView (
                 //                    values: [Double(wastes.count), Double(consumes.count)],
@@ -148,19 +163,21 @@ struct UsageReportView: View {
                 //                )
                 
             }
+            .background(Color(red: 252/255, green: 250/255, blue: 250/255))
+            .scrollContentBackground(.hidden)
             .accentColor(.clear)
             .listStyle(.inset)
             
             
             
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 35)
                     .frame(height: 100)
-                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                    .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
                     .padding(.top, 20)
-                
             }
         }
+        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
         .preferredColorScheme(.light)
         .ignoresSafeArea()
         .onAppear {
@@ -170,5 +187,12 @@ struct UsageReportView: View {
         }
     }
 }
+
+struct UsageReportView_Previews: PreviewProvider {
+    static var previews: some View {
+        UsageReportView()
+    }
+}
+
 
 

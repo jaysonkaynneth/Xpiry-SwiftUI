@@ -27,6 +27,12 @@
 		96C51781296B32E300FAAF51 /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C51780296B32E300FAAF51 /* ShoppingListView.swift */; };
 		96C59863297127DA00482208 /* UsageReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C59862297127DA00482208 /* UsageReportView.swift */; };
 		96D50122298829E80077F1F9 /* StepperOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D50121298829E80077F1F9 /* StepperOverlayView.swift */; };
+		96D501252988D2EA0077F1F9 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96D501242988D2EA0077F1F9 /* DMSans-Bold.ttf */; };
+		96D5012B2988D2F60077F1F9 /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96D501262988D2F60077F1F9 /* DMSans-BoldItalic.ttf */; };
+		96D5012C2988D2F60077F1F9 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96D501272988D2F60077F1F9 /* DMSans-Regular.ttf */; };
+		96D5012D2988D2F60077F1F9 /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96D501282988D2F60077F1F9 /* DMSans-Italic.ttf */; };
+		96D5012E2988D2F60077F1F9 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96D501292988D2F60077F1F9 /* DMSans-Medium.ttf */; };
+		96D5012F2988D2F60077F1F9 /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96D5012A2988D2F60077F1F9 /* DMSans-MediumItalic.ttf */; };
 		96E5B882296B1AC00038CB6A /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B881296B1AC00038CB6A /* OverlayView.swift */; };
 		96E5B884296B1F3D0038CB6A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E5B883296B1F3D0038CB6A /* MainView.swift */; };
 		96F9C46F297FDBD80048CBB6 /* TextfieldPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F9C46E297FDBD80048CBB6 /* TextfieldPlaceholder.swift */; };
@@ -56,6 +62,12 @@
 		96C51780296B32E300FAAF51 /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		96C59862297127DA00482208 /* UsageReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageReportView.swift; sourceTree = "<group>"; };
 		96D50121298829E80077F1F9 /* StepperOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperOverlayView.swift; sourceTree = "<group>"; };
+		96D501242988D2EA0077F1F9 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
+		96D501262988D2F60077F1F9 /* DMSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		96D501272988D2F60077F1F9 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
+		96D501282988D2F60077F1F9 /* DMSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Italic.ttf"; sourceTree = "<group>"; };
+		96D501292988D2F60077F1F9 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
+		96D5012A2988D2F60077F1F9 /* DMSans-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-MediumItalic.ttf"; sourceTree = "<group>"; };
 		96E5B881296B1AC00038CB6A /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		96E5B883296B1F3D0038CB6A /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		96F9C46E297FDBD80048CBB6 /* TextfieldPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldPlaceholder.swift; sourceTree = "<group>"; };
@@ -98,6 +110,7 @@
 				967B62142938A90A0050CA3E /* View */,
 				967B62162938A91E0050CA3E /* Model */,
 				967B62152938A9120050CA3E /* View Model */,
+				96D501232988CDFB0077F1F9 /* Custom_Fonts */,
 				967B62172938A9B00050CA3E /* Extension */,
 				969FD13A2954580C0066078D /* TestCode */,
 				964D9F3A2935C48E00AA9B4F /* Preview Content */,
@@ -177,6 +190,19 @@
 			path = "Non-screen Views";
 			sourceTree = "<group>";
 		};
+		96D501232988CDFB0077F1F9 /* Custom_Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				96D501262988D2F60077F1F9 /* DMSans-BoldItalic.ttf */,
+				96D501282988D2F60077F1F9 /* DMSans-Italic.ttf */,
+				96D501292988D2F60077F1F9 /* DMSans-Medium.ttf */,
+				96D5012A2988D2F60077F1F9 /* DMSans-MediumItalic.ttf */,
+				96D501272988D2F60077F1F9 /* DMSans-Regular.ttf */,
+				96D501242988D2EA0077F1F9 /* DMSans-Bold.ttf */,
+			);
+			path = Custom_Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -239,8 +265,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96D5012C2988D2F60077F1F9 /* DMSans-Regular.ttf in Resources */,
+				96D5012E2988D2F60077F1F9 /* DMSans-Medium.ttf in Resources */,
 				964D9F3C2935C48E00AA9B4F /* Preview Assets.xcassets in Resources */,
+				96D501252988D2EA0077F1F9 /* DMSans-Bold.ttf in Resources */,
 				964D9F392935C48E00AA9B4F /* Assets.xcassets in Resources */,
+				96D5012F2988D2F60077F1F9 /* DMSans-MediumItalic.ttf in Resources */,
+				96D5012D2988D2F60077F1F9 /* DMSans-Italic.ttf in Resources */,
+				96D5012B2988D2F60077F1F9 /* DMSans-BoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,7 +448,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jasonkennethhauw.Xpiry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -448,7 +480,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jasonkennethhauw.Xpiry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

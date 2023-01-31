@@ -11,28 +11,49 @@ struct MainView: View {
     @AppStorage("showStartUp") var showStartUp: Bool = true
     
     init() {
-        UITabBar.appearance().unselectedItemTintColor = UIColor.lightGray
+        UITabBar.appearance().unselectedItemTintColor = UIColor(Color(red: 252/255, green: 250/255, blue: 250/255).opacity(0.25))
     }
+    
+    @State private var tabSelection = 0
    
     var body: some View {
-        TabView {
+        TabView(selection: $tabSelection) {
             AllItemsView().tabItem {
-                Label("All Items", systemImage: "house")
-            }
+                if tabSelection == 0 {
+                           Image("HouseIcon")
+                       } else {
+                           Image("HouseFadeIcon")
+                       }
+                       Text("All Items")
+                    .font(Font.custom("DMSans-Medium", size: 18))
+            }.tag(0)
             
             ShoppingListView().tabItem {
-                Label("Shopping List", systemImage: "list.bullet.rectangle.portrait")
-            }
+                if tabSelection == 1 {
+                           Image("ListIcon")
+                       } else {
+                           Image("ListFadeIcon")
+                       }
+                       Text("Shopping List")
+                    .font(Font.custom("DMSans-Medium", size: 18))
+            }.tag(1)
             
             UsageReportView().tabItem {
-                Label("Usage Report", systemImage: "chart.pie")
-            }
+                if tabSelection == 2 {
+                           Image("PieIcon")
+                       } else {
+                           Image("PieFadeIcon")
+                       }
+                       Text("Product Usage")
+                    .font(Font.custom("DMSans-Medium", size: 18))
+            }.tag(2)
         }
+        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
         .preferredColorScheme(.light)
         .fullScreenCover(isPresented: $showStartUp, content: {
                 StartUpView(showStartUp: $showStartUp)
             })
-        .tint(.white)
+        .tint(Color(red: 252/255, green: 250/255, blue: 250/255))
     }
 }
 

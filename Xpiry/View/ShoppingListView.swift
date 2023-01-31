@@ -21,38 +21,65 @@ struct ShoppingListView: View {
         
         VStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                Rectangle()
                     .frame(height: 150)
-                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                    .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
                 
                 HStack {
-                    Text("Shopping List")
-                        .font(.system(size: 30, design: .rounded))
-                        .foregroundColor(.white)
-                        .bold()
-                        .padding(.leading)
+                    if completeType == "All" {
+                        Text("Shopping List")
+                            .font(Font.custom("DMSans-Bold", size: 30))
+                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                            .bold()
+                            .padding(.leading)
+                    } else {
+                        Text("Shopping List")
+                            .font(Font.custom("DMSans-Bold", size: 30))
+                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                            .bold()
+                            .padding(.leading)
+                            .padding(.top, 50)
+                    }
                     Spacer()
-                    EditButton()
-                        .padding()
-                        .foregroundColor(.white)
+                    
+                    if completeType == "All" {
+                        EditButton()
+                            .padding()
+                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                    } else {
+                        EditButton()
+                            .padding()
+                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                            .padding(.top, 50)
+                    }
                     Button {
                         showModal.toggle()
                     } label: {
                         ZStack {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundColor(.white)
-                                .frame(width: 25, height: 25)
+                            if completeType == "All" {
+                                Image(systemName: "plus")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .frame(width: 25, height: 25)
+                            } else {
+                                Image(systemName: "plus")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .frame(width: 25, height: 25)
+                                    .padding(.top, 50)
+                            }
                         }
                     }          .sheet(isPresented: $showModal) {
                         AddSLModalView(showModal: self.$showModal)
                     }
-                }.padding(.bottom)
-                    .padding(.trailing)
+                }
+                .padding(.bottom)
+                .padding(.trailing)
                 
                 if completeType == "All" {
-                    SearchBarView(searchText: $searchText, containerText: "Find Items")
+                    SearchBarView(searchText: $searchText, containerText: "Search")
                         .offset(y:40)
                         .padding()
                 } else {
@@ -76,9 +103,11 @@ struct ShoppingListView: View {
                         if lowProduct.contains(lowSearch) {
                             
                             HStack{
-                                Text(sItem.name ?? "no feedback")
+                                Text(sItem.name ?? "no item")
+                                    .font(Font.custom("DMSans-Regular", size: 18))
                                 Spacer()
                                 Text(String(sItem.stock))
+                                    .font(Font.custom("DMSans-Regular", size: 18))
                                 Button {
                                     sItem.done.toggle()
                                     try? moc.save()
@@ -91,9 +120,11 @@ struct ShoppingListView: View {
                         } else if searchText.isEmpty {
                             
                             HStack{
-                                Text(sItem.name ?? "no feedback")
+                                Text(sItem.name ?? "no item")
+                                    .font(Font.custom("DMSans-Regular", size: 18))
                                 Spacer()
                                 Text(String(sItem.stock))
+                                    .font(Font.custom("DMSans-Regular", size: 18))
                                 Button {
                                     sItem.done.toggle()
                                     try? moc.save()
@@ -104,8 +135,12 @@ struct ShoppingListView: View {
                             }
                         }
                     }.onDelete(perform: deleteItems)
+                        .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
                     
-                }.listStyle(.inset)
+                }
+                .background(Color(red: 252/255, green: 250/255, blue: 250/255))
+                .scrollContentBackground(.hidden)
+                .listStyle(.inset)
                 
             } else if completeType == "Done" {
                 List {
@@ -113,9 +148,11 @@ struct ShoppingListView: View {
                         $0.done == true
                     }) { sItem in
                         HStack{
-                            Text(sItem.name ?? "no feedback")
+                            Text(sItem.name ?? "no item")
+                                .font(Font.custom("DMSans-Regular", size: 18))
                             Spacer()
                             Text(String(sItem.stock))
+                                .font(Font.custom("DMSans-Regular", size: 18))
                             Button {
                                 sItem.done.toggle()
                                 try? moc.save()
@@ -125,10 +162,17 @@ struct ShoppingListView: View {
                             }
                             
                         }
+                        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
+                    
                         
                     }.onDelete(perform: deleteItems)
+                        .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
+                     
                     
-                }.listStyle(.inset)
+                }
+                .background(Color(red: 252/255, green: 250/255, blue: 250/255))
+                .scrollContentBackground(.hidden)
+                .listStyle(.inset)
                 
             } else {
                 List {
@@ -136,9 +180,11 @@ struct ShoppingListView: View {
                         $0.done == false
                     }) { sItem in
                         HStack{
-                            Text(sItem.name ?? "no feedback")
+                            Text(sItem.name ?? "no item")
+                                .font(Font.custom("DMSans-Regular", size: 18))
                             Spacer()
                             Text(String(sItem.stock))
+                                .font(Font.custom("DMSans-Regular", size: 18))
                             Button {
                                 sItem.done.toggle()
                                 try? moc.save()
@@ -148,22 +194,26 @@ struct ShoppingListView: View {
                             }
                             
                         }
+                        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                         
                     }.onDelete(perform: deleteItems)
+                        .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
                     
-                }.listStyle(.inset)
-                    .padding(.top, 25)
+                }
+                .background(Color(red: 252/255, green: 250/255, blue: 250/255))
+                .scrollContentBackground(.hidden)
+                .listStyle(.inset)
             }
             
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 35)
                     .frame(height: 100)
-                    .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                    .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
                     .padding(.top, 20)
-                
             }
             
         }
+        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
         .preferredColorScheme(.light)
         .ignoresSafeArea()
     }

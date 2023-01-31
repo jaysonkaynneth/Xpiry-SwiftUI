@@ -13,12 +13,12 @@ struct RoundedRectProgressViewStyle: ProgressViewStyle {
        ZStack(alignment: .leading) {
            RoundedRectangle(cornerRadius: 5)
                .frame(width: 300, height: 28)
-               .foregroundColor((Color(red: 225/255, green: 85/255, blue: 84/255)))
+               .foregroundColor(Color(red: 251/255, green: 51/255, blue: 52/255))
                
            
            RoundedRectangle(cornerRadius: 5)
                .frame(width: CGFloat(configuration.fractionCompleted ?? 0) * 300, height: 28)
-               .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
+               .foregroundColor(Color(red: 33/255, green: 177/255, blue: 108/255))
        }
    }
 }

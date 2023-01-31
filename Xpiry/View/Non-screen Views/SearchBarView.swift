@@ -9,20 +9,19 @@ import SwiftUI
 
 struct SearchBarView: View {
     @Binding var searchText : String
-    var containerText : String = "Find Item"
+    var containerText : String = "Search"
     var body: some View {
         HStack{
             Image(systemName: "magnifyingglass")
                 .bold()
-                .foregroundColor(.gray)
-                
+                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
             ZStack(alignment: .leading) {
                 if searchText.isEmpty {
                     Text(containerText)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                 }
                 TextField("", text: $searchText)
-                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                    .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                     .foregroundColor(.black)
                     .autocorrectionDisabled(true)
             }
@@ -43,8 +42,8 @@ struct SearchBarView: View {
         .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(.white)
-                .opacity(1)
+                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                .opacity(0.5)
         )
     }
 }

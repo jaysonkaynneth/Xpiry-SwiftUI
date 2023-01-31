@@ -17,25 +17,24 @@ struct StartUpView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Hello!")    .font(.system(size: 50, design: .rounded))
-                    .bold()
+                Text("Hello!")
+                    .font(Font.custom("DMSans-Bold", size: 50))
                 Spacer()
             }
             .padding(.leading)
             .padding(.top)
             HStack {
-                Text("Welcome to Xpiry,\nyour expiration tracker app.\n\nLet's get to know each other first!\nWhat should I call you?")    .font(.system(size: 18, design: .rounded))
-                    .bold()
+                Text("Welcome to Xpiry,\nyour expiration tracker app.\n\nLet's get to know each other first!\nWhat should I call you?")
+                    .font(Font.custom("DMSans-Medium", size: 18))
                 Spacer()
             }.padding(.leading)
             ZStack {
                 TextField("", text: $userName)
-                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                    .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                     .padding(.horizontal)
                     .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .strokeBorder(.black)
-                            .foregroundColor(.clear)
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color(red: 240/255, green: 240/255, blue: 240/255))
                             .frame(height: 35)
                     )
             }.padding(.horizontal)
@@ -49,11 +48,11 @@ struct StartUpView: View {
                         .frame(width: 200, height: 60)
                     
                     Text("Save")
-                        .font(.system(size: 18, design: .rounded))
-                        .foregroundColor(.white)
+                        .font(Font.custom("DMSans-Medium", size: 18))
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                 }
             }
-            .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+            .foregroundColor(Color(red: 33/255, green: 177/255, blue: 108/255))
             .disabled(userName.isEmpty)
             .actionSheet(isPresented: $showAlert) {
                 ActionSheet(title: Text("Are you sure?"),
@@ -82,6 +81,7 @@ struct StartUpView: View {
                 )
             }
         }
+        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
         .preferredColorScheme(.light)
     }
 }

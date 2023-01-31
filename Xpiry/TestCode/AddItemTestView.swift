@@ -64,7 +64,7 @@ struct AddItemTestView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 150, height: 30)
                         Text("Add an Image")
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                             .font(.system(size: 18, design: .rounded))
                     }
                 }.padding(.leading, 10)
@@ -186,7 +186,7 @@ struct AddItemTestView: View {
                         
                         Text("Save")
                             .font(.system(size: 18, design: .rounded))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                     }
                 }
                 .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty)

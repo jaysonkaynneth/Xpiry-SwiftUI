@@ -53,10 +53,7 @@ struct EditItemModalView: View {
                         .resizable()
                         .frame(width: 130, height: 130)
                         .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .strokeBorder(.black)
-                        )
+                
                     
                     
                     Spacer()
@@ -90,17 +87,16 @@ struct EditItemModalView: View {
                     VStack(alignment: .leading) {
                         HStack {
                             Text("Product Name")
-                                .font(.system(size: 18, design: .rounded))
+                                .font(Font.custom("DMSans-Medium", size: 18))
                                 .bold()
                                 .padding(.bottom, 10)
                         }
                         TextField(item.name ?? " ", text: $name)
-                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                            .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                             .padding(.leading, 10)
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(.black)
-                                    .foregroundColor(.clear)
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(red: 240/255, green: 240/255, blue: 240/255))
                                     .frame(height: 35)
                             )
                     }
@@ -112,22 +108,22 @@ struct EditItemModalView: View {
                 HStack {
                     DatePicker(selection: $expiryDate, displayedComponents: .date) {
                         Text("Expiry Date")
-                            .font(.system(size: 18, design: .rounded))
+                            .font(Font.custom("DMSans-Medium", size: 18))
                             .bold()
                     }
-                    .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                    .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                     
                 }.padding()
                 
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Stock")
-                            .font(.system(size: 18, design: .rounded))
+                            .font(Font.custom("DMSans-Medium", size: 18))
                             .bold()
                             .padding(.bottom, 10)
                         
                         TextField(String(item.stock), text: $stock)
-                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                            .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                             .keyboardType(.numberPad)
                             .onReceive(Just(stock)) { input in
                                 let filtered = input.filter { "0123456789".contains($0) }
@@ -140,9 +136,8 @@ struct EditItemModalView: View {
                             .padding(.leading, 10)
                             .padding(.trailing, 10)
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(.black)
-                                    .foregroundColor(.clear)
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(red: 240/255, green: 240/255, blue: 240/255))
                                     .frame(height: 35)
                             )
                     }
@@ -152,13 +147,13 @@ struct EditItemModalView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Reminder")
-                            .font(.system(size: 18, design: .rounded))
+                            .font(Font.custom("DMSans-Medium", size: 18))
                             .bold()
                             .padding(.bottom, 10)
                         
                         HStack {
                             TextField(String(item.reminder), text: $reminder)
-                                .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                                .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                                 .keyboardType(.numberPad)
                                 .onReceive(Just(reminder)) { input in
                                     let filtered = input.filter { "0123456789".contains($0) }
@@ -171,14 +166,13 @@ struct EditItemModalView: View {
                                 .padding(.leading, 10)
                                 .padding(.trailing, 10)
                                 .background(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .strokeBorder(.black)
-                                        .foregroundColor(.clear)
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color(red: 240/255, green: 240/255, blue: 240/255))
                                         .frame(height: 35)
                                 )
                             
                             Text("Day(s) before expiring")
-                                .font(.system(size: 18, design: .rounded))
+                                .font(Font.custom("DMSans-Medium", size: 18))
                         }
                     }
                     Spacer()
@@ -190,17 +184,16 @@ struct EditItemModalView: View {
                     VStack(alignment: .leading) {
                         HStack {
                             Text("Note")
-                                .font(.system(size: 18, design: .rounded))
+                                .font(Font.custom("DMSans-Medium", size: 18))
                                 .bold()
                                 .padding(.bottom, 10)
                         }
                         TextField("", text: $note)
-                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                            .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                             .padding(.leading, 10)
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(.black)
-                                    .foregroundColor(.clear)
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color(red: 240/255, green: 240/255, blue: 240/255))
                                     .frame(height: 35)
                             )
                     }
@@ -215,7 +208,7 @@ struct EditItemModalView: View {
                     VStack {
                         HStack {
                             Text("Product Usage")
-                                .font(.system(size: 18, design: .rounded))
+                                .font(Font.custom("DMSans-Medium", size: 18))
                                 .bold()
                                 .padding(.bottom, 10)
                             Button {
@@ -224,7 +217,7 @@ struct EditItemModalView: View {
                                 Image(systemName: "info.circle")
                                     .padding(.bottom, 10)
                             }
-                            .tint(Color(red: 65/255, green: 146/255, blue: 255/255))
+                            .tint(Color(red: 77/255, green: 108/255, blue: 250/255))
                             Spacer()
                         }
                         HStack {
@@ -259,12 +252,12 @@ struct EditItemModalView: View {
                             } label: {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 35)
-                                        .foregroundColor(Color(red: 59/255, green: 178/255, blue: 115/255))
-                                        .frame(width: 100, height: 40)
+                                        .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
+                                        .frame(width: 120, height: 40)
                                     
                                     Text("Consumed")
-                                        .font(.system(size: 18, design: .rounded))
-                                        .foregroundColor(.white)
+                                        .font(Font.custom("DMSans-Medium", size: 18))
+                                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                                 }
                             }.disabled(item.stock == 0 || quantity == 0)
                             
@@ -295,12 +288,12 @@ struct EditItemModalView: View {
                             } label: {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 35)
-                                        .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-                                        .frame(width: 100, height: 40)
+                                        .foregroundColor((Color(red: 251/255, green: 51/255, blue: 52/255)))
+                                        .frame(width: 120, height: 40)
                                     
                                     Text("Wasted")
-                                        .font(.system(size: 18, design: .rounded))
-                                        .foregroundColor(.white)
+                                        .font(Font.custom("DMSans-Medium", size: 18))
+                                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                                 }
                             }.disabled(item.stock == 0 || quantity == 0)
                             Spacer()
@@ -412,16 +405,17 @@ struct EditItemModalView: View {
                             .frame(width: 200, height: 60)
                         
                         Text("Save")
-                            .font(.system(size: 18, design: .rounded))
-                            .foregroundColor(.white)
+                            .font(Font.custom("DMSans-Medium", size: 18))
+                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                     }
                 }
-                .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                .foregroundColor(Color(red: 33/255, green: 177/255, blue: 108/255))
                 .padding()
                 //                .disabled(name.isEmpty || stock.isEmpty || reminder.isEmpty)
                 
             }.padding(.top)
         }
+        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
         .preferredColorScheme(.light)
         .overlay(secretOverlay)
         .toolbar(showTabBar ? .visible : .hidden, for: .tabBar)

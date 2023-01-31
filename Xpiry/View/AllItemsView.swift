@@ -22,33 +22,51 @@ struct AllItemsView: View {
         NavigationView {
             VStack {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(height: 150)
-                        .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
+                        .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
                     
                     HStack {
-                        Text("All Items")
-                            .font(.system(size: 30, design: .rounded))
-                            .foregroundColor(.white)
-                            .bold()
-                            .padding(.leading)
+                        if itemCondition == 0 {
+                            Text("All Items")
+                                .font(Font.custom("DMSans-Bold", size: 30))
+                                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                .bold()
+                                .padding(.leading)
+                        } else {
+                            Text("All Items")
+                                .font(Font.custom("DMSans-Bold", size: 30))
+                                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                .bold()
+                                .padding(.leading)
+                                .padding(.top, 50)
+                        }
                         Spacer()
                         Button {
                             isPresented.toggle()
                         } label: {
                             ZStack {
-                                Image(systemName: "plus")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .foregroundColor(.white)
-                                    .frame(width: 25, height: 25)
+                                if itemCondition == 0 {
+                                    Image(systemName: "plus")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                        .frame(width: 25, height: 25)
+                                } else {
+                                    Image(systemName: "plus")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                        .frame(width: 25, height: 25)
+                                        .padding(.top, 50)
+                                }
                             }
                         }   .fullScreenCover(isPresented: $isPresented, content: AddItemModalView.init)
                     }.padding(.bottom)
                         .padding(.trailing)
                     
                     if itemCondition == 0 {
-                        SearchBarView(searchText: $searchText, containerText: "Find Items")
+                        SearchBarView(searchText: $searchText, containerText: "Search")
                             .offset(y:40)
                             .padding()
                     } else {
@@ -57,8 +75,10 @@ struct AllItemsView: View {
                 }
                 
                 Picker(" ", selection: $itemCondition) {
-                    Text("All Items").tag(0)
-                    Text("Expired Items").tag(1)
+                    Text("All Items")
+                        .tag(0)
+                    Text("Expired Items")
+                        .tag(1)
                 }
                 .padding()
                 .pickerStyle(.segmented)
@@ -75,14 +95,14 @@ struct AllItemsView: View {
                                         ZStack {
                                             
                                             if Date() >= item.expiry! {
-                                                RoundedRectangle(cornerRadius: 15)
+                                                RoundedRectangle(cornerRadius: 24)
                                                     .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-                                                    .shadow(radius: 5)
+                                                    .shadow(radius: 5, x: 0, y: 4)
                                                     .frame(height: 95)
                                             } else {
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .foregroundColor(.white)
-                                                    .shadow(radius: 5)
+                                                RoundedRectangle(cornerRadius: 24)
+                                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                    .shadow(radius: 5, x: 0, y: 4)
                                                     .frame(height: 95)
                                             }
                                             
@@ -92,10 +112,7 @@ struct AllItemsView: View {
                                                     .resizable()
                                                     .frame(width: 85, height: 85)
                                                     .clipShape(Circle())
-                                                    .overlay(
-                                                        Circle()
-                                                            .strokeBorder(.black)
-                                                    )
+                                                   
                                                 VStack {
                                                     Text(item.name ?? " ")
                                                     Text(dateFormatter.string(from: item.expiry!))
@@ -120,15 +137,17 @@ struct AllItemsView: View {
                                         ZStack {
                                             
                                             if Date() >= item.expiry! {
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-                                                    .shadow(radius: 5)
+                                                RoundedRectangle(cornerRadius: 24)
+                                                    .foregroundColor(Color(red: 251/255, green: 51/255, blue: 52/255))
+                                                    .shadow(radius: 5, x: 0, y: 4)
                                                     .frame(height: 95)
+                                                    .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                                             } else {
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .foregroundColor(.white)
-                                                    .shadow(radius: 5)
+                                                RoundedRectangle(cornerRadius: 24)
+                                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                    .shadow(radius: 5, x: 0, y: 4)
                                                     .frame(height: 95)
+                                                    .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                                             }
                                             
                                             HStack {
@@ -137,16 +156,16 @@ struct AllItemsView: View {
                                                     .resizable()
                                                     .frame(width: 85, height: 85)
                                                     .clipShape(Circle())
-                                                    .overlay(
-                                                        Circle()
-                                                            .strokeBorder(.black)
-                                                    )
+                                                   
                                                 VStack {
                                                     Text(item.name ?? " ")
+                                                        .font(Font.custom("DMSans-Regular", size: 18))
                                                     Text(dateFormatter.string(from: item.expiry!))
+                                                        .font(Font.custom("DMSans-Regular", size: 18))
                                                 }
                                                 Spacer()
                                                 Text(String(item.stock))
+                                                    .font(Font.custom("DMSans-Regular", size: 18))
                                                 
                                             }
                                             .padding(.horizontal)
@@ -155,11 +174,17 @@ struct AllItemsView: View {
                                         .listRowSeparator(.hidden)
                                   
                                 }
+                           
                                 
                             }
-                        }.onDelete(perform: deleteItems)
-                            .listRowSeparator(.hidden)
+                        }
+                        .onDelete(perform: deleteItems)
+                        .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
+                        .listRowSeparator(.hidden)
+                            
                     }
+                    .background(Color(red: 252/255, green: 250/255, blue: 250/255))
+                    .scrollContentBackground(.hidden)
                     .accentColor(.clear)
                     .listStyle(.inset)
                     
@@ -178,15 +203,17 @@ struct AllItemsView: View {
                                         ZStack {
                                             
                                             if Date() >= item.expiry! {
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-                                                    .shadow(radius: 5)
+                                                RoundedRectangle(cornerRadius: 24)
+                                                    .foregroundColor(Color(red: 251/255, green: 51/255, blue: 52/255))
+                                                    .shadow(radius: 5, x: 0, y: 4)
                                                     .frame(height: 95)
+                                                    .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                                             } else {
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .foregroundColor(.white)
-                                                    .shadow(radius: 5)
+                                                RoundedRectangle(cornerRadius: 24)
+                                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                    .shadow(radius: 5, x: 0, y: 4)
                                                     .frame(height: 95)
+                                                    .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                                             }
                                             
                                             HStack {
@@ -195,16 +222,16 @@ struct AllItemsView: View {
                                                     .resizable()
                                                     .frame(width: 85, height: 85)
                                                     .clipShape(Circle())
-                                                    .overlay(
-                                                        Circle()
-                                                            .strokeBorder(.black)
-                                                    )
+                                                 
                                                 VStack {
                                                     Text(item.name ?? " ")
+                                                        .font(Font.custom("DMSans-Regular", size: 18))
                                                     Text(dateFormatter.string(from: item.expiry!))
+                                                        .font(Font.custom("DMSans-Regular", size: 18))
                                                 }
                                                 Spacer()
                                                 Text(String(item.stock))
+                                                    .font(Font.custom("DMSans-Regular", size: 18))
                                                 
                                             }
                                             .padding(.horizontal)
@@ -214,6 +241,7 @@ struct AllItemsView: View {
                                    
                                     
                                 }
+                                .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                                 
 //                            } else if searchText.isEmpty {
 //
@@ -230,7 +258,7 @@ struct AllItemsView: View {
 //                                                    .frame(height: 95)
 //                                            } else {
 //                                                RoundedRectangle(cornerRadius: 15)
-//                                                    .foregroundColor(.white)
+//                                                       .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
 //                                                    .shadow(radius: 5)
 //                                                    .frame(height: 95)
 //                                            }
@@ -261,23 +289,31 @@ struct AllItemsView: View {
 //                                }
 //
 //                            }
-                        }.onDelete(perform: deleteItems)
-                            .listRowSeparator(.hidden)
-                    }.listStyle(.inset)
+                        }
+                        .onDelete(perform: deleteItems)
+                        .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
+                        .listRowSeparator(.hidden)
+                        
+                    }
+                    .background(Color(red: 252/255, green: 250/255, blue: 250/255))
+                    .scrollContentBackground(.hidden)
+                    .listStyle(.inset)
+             
                 }
                 
                 
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 35)
                         .frame(height: 100)
-                        .foregroundColor(Color(red:12/255, green: 91/255, blue: 198/255))
+                        .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
                         .padding(.top, 20)
-                    
                 }
             }
+            .background(Color(red: 252/255, green: 250/255, blue: 250/255))
             .ignoresSafeArea()
             .preferredColorScheme(.light)
         }
+        .background(Color(red: 252/255, green: 250/255, blue: 250/255))
     }
     
     private func deleteItems(offsets: IndexSet) {
