@@ -80,7 +80,7 @@ struct UsageReportView: View {
                     RoundedRectangle(cornerRadius: 24)
                         .frame(height: 150)
                         .shadow(radius: 5, x: 0, y: 4)
-                        .foregroundColor(Color(red: 77/255, green: 108/255, blue: 250/255))
+                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
                         .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                     VStack {
                         ProgressView(value: barValue, total: 100/100)
@@ -92,18 +92,18 @@ struct UsageReportView: View {
                             let consumeFormat = String(format: "%.1f", consumePercent)
                             
                             Text("Consumed")
-                                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                .foregroundColor(Color(red: 32/255, green: 32/255, blue: 48/255))
                                 .font(Font.custom("DMSans-Medium", size: 18))
                                 .bold()
                             
                             if consumeFormat == "nan" {
                                 Text("0%")
-                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .foregroundColor(Color(red: 32/255, green: 32/255, blue: 48/255))
                                     .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             } else {
                                 Text("\(consumeFormat)%")
-                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .foregroundColor(Color(red: 32/255, green: 32/255, blue: 48/255))
                                     .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             }
@@ -111,18 +111,18 @@ struct UsageReportView: View {
                             Spacer()
                             
                             Text("Wasted")
-                                .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                .foregroundColor(Color(red: 32/255, green: 32/255, blue: 48/255))
                                 .font(Font.custom("DMSans-Medium", size: 18))
                                 .bold()
                             
                             if wasteFormat == "nan" {
                                 Text("0%")
-                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .foregroundColor(Color(red: 32/255, green: 32/255, blue: 48/255))
                                     .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             } else {
                                 Text("\(wasteFormat)%")
-                                    .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                    .foregroundColor(Color(red: 32/255, green: 32/255, blue: 48/255))
                                     .font(Font.custom("DMSans-Medium", size: 18))
                                     .bold()
                             }

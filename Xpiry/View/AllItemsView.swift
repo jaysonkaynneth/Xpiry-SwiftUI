@@ -107,19 +107,42 @@ struct AllItemsView: View {
                                             }
                                             
                                             HStack {
-                                                Image(uiImage: UIImage(data: item.image ?? self.image)!)
-                                                    .renderingMode(.original)
-                                                    .resizable()
-                                                    .frame(width: 85, height: 85)
-                                                    .clipShape(Circle())
-                                                   
-                                                VStack {
-                                                    Text(item.name ?? " ")
-                                                    Text(dateFormatter.string(from: item.expiry!))
+                                                if Date() >= item.expiry! {
+                                                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                        .renderingMode(.original)
+                                                        .resizable()
+                                                        .frame(width: 85, height: 85)
+                                                        .clipShape(Circle())
+                                                    
+                                                    VStack {
+                                                        Text(item.name ?? " ")
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                        Text(dateFormatter.string(from: item.expiry!))
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                    }
+                                                    Spacer()
+                                                    Text(String(item.stock))
+                                                        .font(Font.custom("DMSans-Regular", size: 18))
+                                                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                } else {
+                                                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                        .renderingMode(.original)
+                                                        .resizable()
+                                                        .frame(width: 85, height: 85)
+                                                        .clipShape(Circle())
+                                                    
+                                                    VStack {
+                                                        Text(item.name ?? " ")
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                        Text(dateFormatter.string(from: item.expiry!))
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                    }
+                                                    Spacer()
+                                                    Text(String(item.stock))
+                                                        .font(Font.custom("DMSans-Regular", size: 18))
                                                 }
-                                                Spacer()
-                                                Text(String(item.stock))
-                                                
                                             }
                                             .padding(.horizontal)
                                             
@@ -151,22 +174,42 @@ struct AllItemsView: View {
                                             }
                                             
                                             HStack {
-                                                Image(uiImage: UIImage(data: item.image ?? self.image)!)
-                                                    .renderingMode(.original)
-                                                    .resizable()
-                                                    .frame(width: 85, height: 85)
-                                                    .clipShape(Circle())
-                                                   
-                                                VStack {
-                                                    Text(item.name ?? " ")
+                                                if Date() >= item.expiry! {
+                                                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                        .renderingMode(.original)
+                                                        .resizable()
+                                                        .frame(width: 85, height: 85)
+                                                        .clipShape(Circle())
+                                                    
+                                                    VStack {
+                                                        Text(item.name ?? " ")
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                        Text(dateFormatter.string(from: item.expiry!))
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                    }
+                                                    Spacer()
+                                                    Text(String(item.stock))
                                                         .font(Font.custom("DMSans-Regular", size: 18))
-                                                    Text(dateFormatter.string(from: item.expiry!))
+                                                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                } else {
+                                                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                        .renderingMode(.original)
+                                                        .resizable()
+                                                        .frame(width: 85, height: 85)
+                                                        .clipShape(Circle())
+                                                    
+                                                    VStack {
+                                                        Text(item.name ?? " ")
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                        Text(dateFormatter.string(from: item.expiry!))
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                    }
+                                                    Spacer()
+                                                    Text(String(item.stock))
                                                         .font(Font.custom("DMSans-Regular", size: 18))
                                                 }
-                                                Spacer()
-                                                Text(String(item.stock))
-                                                    .font(Font.custom("DMSans-Regular", size: 18))
-                                                
                                             }
                                             .padding(.horizontal)
                                             
@@ -193,9 +236,6 @@ struct AllItemsView: View {
                         ForEach(items.filter {
                             $0.expired == true
                         }) { item in
-//                            let lowSearch = searchText.lowercased()
-//                            let lowProduct = item.name!.lowercased()
-//                            if lowProduct.contains(lowSearch) {
                                 NavigationLink {
                                     EditItemModalView(item: item)
                                 } label: {
@@ -215,24 +255,44 @@ struct AllItemsView: View {
                                                     .frame(height: 95)
                                                     .background(Color(red: 252/255, green: 250/255, blue: 250/255))
                                             }
-                                            
+
                                             HStack {
-                                                Image(uiImage: UIImage(data: item.image ?? self.image)!)
-                                                    .renderingMode(.original)
-                                                    .resizable()
-                                                    .frame(width: 85, height: 85)
-                                                    .clipShape(Circle())
-                                                 
-                                                VStack {
-                                                    Text(item.name ?? " ")
+                                                if Date() >= item.expiry! {
+                                                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                        .renderingMode(.original)
+                                                        .resizable()
+                                                        .frame(width: 85, height: 85)
+                                                        .clipShape(Circle())
+                                                    
+                                                    VStack {
+                                                        Text(item.name ?? " ")
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                        Text(dateFormatter.string(from: item.expiry!))
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                            .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                    }
+                                                    Spacer()
+                                                    Text(String(item.stock))
                                                         .font(Font.custom("DMSans-Regular", size: 18))
-                                                    Text(dateFormatter.string(from: item.expiry!))
+                                                        .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
+                                                } else {
+                                                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                                        .renderingMode(.original)
+                                                        .resizable()
+                                                        .frame(width: 85, height: 85)
+                                                        .clipShape(Circle())
+                                                    
+                                                    VStack {
+                                                        Text(item.name ?? " ")
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                        Text(dateFormatter.string(from: item.expiry!))
+                                                            .font(Font.custom("DMSans-Regular", size: 18))
+                                                    }
+                                                    Spacer()
+                                                    Text(String(item.stock))
                                                         .font(Font.custom("DMSans-Regular", size: 18))
                                                 }
-                                                Spacer()
-                                                Text(String(item.stock))
-                                                    .font(Font.custom("DMSans-Regular", size: 18))
-                                                
                                             }
                                             .padding(.horizontal)
                                             
@@ -242,53 +302,6 @@ struct AllItemsView: View {
                                     
                                 }
                                 .background(Color(red: 252/255, green: 250/255, blue: 250/255))
-                                
-//                            } else if searchText.isEmpty {
-//
-//                                NavigationLink {
-//                                    EditItemModalView(item: item)
-//                                } label: {
-//
-//                                        ZStack {
-//
-//                                            if Date() >= item.expiry! {
-//                                                RoundedRectangle(cornerRadius: 15)
-//                                                    .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
-//                                                    .shadow(radius: 5)
-//                                                    .frame(height: 95)
-//                                            } else {
-//                                                RoundedRectangle(cornerRadius: 15)
-//                                                       .foregroundColor(Color(red: 252/255, green: 250/255, blue: 250/255))
-//                                                    .shadow(radius: 5)
-//                                                    .frame(height: 95)
-//                                            }
-//
-//                                            HStack {
-//                                                Image(uiImage: UIImage(data: item.image ?? self.image)!)
-//                                                    .renderingMode(.original)
-//                                                    .resizable()
-//                                                    .frame(width: 85, height: 85)
-//                                                    .clipShape(Circle())
-//                                                    .overlay(
-//                                                        Circle()
-//                                                            .strokeBorder(.black)
-//                                                    )
-//                                                VStack {
-//                                                    Text(item.name ?? " ")
-//                                                    Text(dateFormatter.string(from: item.expiry!))
-//                                                }
-//                                                Spacer()
-//                                                Text(String(item.stock))
-//
-//                                            }
-//                                            .padding(.horizontal)
-//
-//                                        }
-//                                        .listRowSeparator(.hidden)
-//
-//                                }
-//
-//                            }
                         }
                         .onDelete(perform: deleteItems)
                         .listRowBackground(Color(red: 252/255, green: 250/255, blue: 250/255))
