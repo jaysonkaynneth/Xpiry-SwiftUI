@@ -24,7 +24,7 @@ struct AddSLModalView: View {
     
     var body: some View {
         VStack {
-            Text("Item Name")
+            Text("Add Item")
                 .font(Font.custom("DMSans-Bold", size: 18))
                 .padding()
             VStack(alignment: .leading) {

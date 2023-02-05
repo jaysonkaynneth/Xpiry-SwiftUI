@@ -60,7 +60,7 @@ struct StartUpView: View {
                             buttons: [
                                 .cancel(),
                                 .default(
-                                    Text("Yes i'm sure"),
+                                    Text("Yes I'm sure"),
                                     action: {
                                         let user = User(context: moc)
                                         user.name = (userName)
