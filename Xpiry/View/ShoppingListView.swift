@@ -71,7 +71,8 @@ struct ShoppingListView: View {
                                     .padding(.top, 50)
                             }
                         }
-                    }          .sheet(isPresented: $showModal) {
+                    }
+                    .sheet(isPresented: $showModal) {
                         AddSLModalView(showModal: self.$showModal)
                     }
                 }

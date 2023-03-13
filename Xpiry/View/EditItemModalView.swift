@@ -48,12 +48,30 @@ struct EditItemModalView: View {
                     .foregroundColor(Color(red: 12/255, green: 91/255, blue: 198/255))
                     Spacer()
                     
-                    Image(uiImage: UIImage(data: item.image ?? self.image)!)
-                        .renderingMode(.original)
-                        .resizable()
-                        .frame(width: 130, height: 130)
-                        .clipShape(Circle())
-                
+                    PhotosPicker(selection: $selectedItems,
+                                 maxSelectionCount: 1,
+                                 matching: .images) {
+                        if selectedItems.count != 0 {
+                            if let data = image, let uiImage = UIImage(data: data) {
+                                Image(uiImage: uiImage)
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .frame(width: 130, height: 130)
+                                    .cornerRadius(8)
+                                    .shadow(radius: 5)
+                                    .clipShape(Circle())
+                            }
+                            
+                        } else {
+                            Image(uiImage: UIImage(data: item.image ?? self.image)!)
+                                .resizable()
+                                .frame(width: 130, height: 130)
+                                .cornerRadius(8)
+                                .shadow(radius: 5)
+                                .foregroundColor(.black)
+                                .clipShape(Circle())
+                        }
+                    }
                     
                     
                     Spacer()
@@ -332,8 +350,14 @@ struct EditItemModalView: View {
                         item.note = (note)
                     }
                     
+                    if image.isEmpty {
+                        item.image = item.image
+                    } else if !image.isEmpty {
+                        item.image = (image)
+                    }
                     
-                    item.image = item.image
+                    
+                    item.image = (image)
                     item.expiry = (expiryDate)
                     if Date() >= expiryDate {
                         item.expired = true
@@ -363,13 +387,15 @@ struct EditItemModalView: View {
                         let users = user[0]
                         let content = UNMutableNotificationContent()
                         print(users.name ?? "")
-                        content.title = "Item is about to expire!"
-                        content.subtitle = "\(users.name ?? "")! your \(item.name ?? "") is gonna expire, better use it soon!"
+                        content.title = "Item Expired!"
+                        content.subtitle = "\(users.name ?? "")! your \(item.name ?? "") has expired!"
                         content.sound = UNNotificationSound.default
                         
                         let dateComponent = Calendar.current.dateComponents([.month, .day, .hour], from: expiryDate)
                         
                         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
+                        
+//                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
                         
                         print("REMINDER SET TO:\(dateComponent)")
                         
@@ -425,6 +451,7 @@ struct EditItemModalView: View {
             self.endTextEditing()
         }
         .onAppear {
+            self.image = item.image!
             self.name = item.name ?? ""
             self.stock = String(item.stock)
             self.reminder = String(item.reminder)

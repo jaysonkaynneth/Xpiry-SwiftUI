@@ -109,7 +109,6 @@
 				969FD131295306970066078D /* Info.plist */,
 				967B62142938A90A0050CA3E /* View */,
 				967B62162938A91E0050CA3E /* Model */,
-				967B62152938A9120050CA3E /* View Model */,
 				96D501232988CDFB0077F1F9 /* Custom_Fonts */,
 				967B62172938A9B00050CA3E /* Extension */,
 				969FD13A2954580C0066078D /* TestCode */,
@@ -129,9 +128,8 @@
 		967B62142938A90A0050CA3E /* View */ = {
 			isa = PBXGroup;
 			children = (
-				96E5B883296B1F3D0038CB6A /* MainView.swift */,
-				96FEE47C2979120600A4DD0B /* StartUpView.swift */,
 				96C598612971279700482208 /* Non-screen Views */,
+				96FEE47C2979120600A4DD0B /* StartUpView.swift */,
 				964D9F362935C48D00AA9B4F /* AllItemsView.swift */,
 				969FD138295447850066078D /* AddItemModalView.swift */,
 				96A8CE2F29405287000BA342 /* EditItemModalView.swift */,
@@ -140,13 +138,6 @@
 				96C59862297127DA00482208 /* UsageReportView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		967B62152938A9120050CA3E /* View Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "View Model";
 			sourceTree = "<group>";
 		};
 		967B62162938A91E0050CA3E /* Model */ = {
@@ -182,6 +173,7 @@
 		96C598612971279700482208 /* Non-screen Views */ = {
 			isa = PBXGroup;
 			children = (
+				96E5B883296B1F3D0038CB6A /* MainView.swift */,
 				967B621A2938B3470050CA3E /* SearchBarView.swift */,
 				96E5B881296B1AC00038CB6A /* OverlayView.swift */,
 				9623929A298230BF0015A949 /* ProgressViewStyle.swift */,
@@ -448,7 +440,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jasonkennethhauw.Xpiry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -480,7 +472,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jasonkennethhauw.Xpiry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

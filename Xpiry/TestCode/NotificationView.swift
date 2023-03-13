@@ -38,13 +38,13 @@ struct NotificationView: View {
         content.sound = .default
         
         //time notification
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
         
-        //calendar notification
-        var dateComponents = DateComponents()
-        dateComponents.hour = 20
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+//        //calendar notification
+//        var dateComponents = DateComponents()
+//        dateComponents.hour = 20
+//
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,

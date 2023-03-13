@@ -96,7 +96,7 @@ struct AllItemsView: View {
                                             
                                             if Date() >= item.expiry! {
                                                 RoundedRectangle(cornerRadius: 24)
-                                                    .foregroundColor(Color(red: 225/255, green: 85/255, blue: 84/255))
+                                                    .foregroundColor(Color(red: 225/255, green: 51/255, blue: 52/255))
                                                     .shadow(radius: 5, x: 0, y: 4)
                                                     .frame(height: 95)
                                             } else {

@@ -249,8 +249,8 @@ struct AddItemModalView: View {
                      let users = user[0]
                      let content = UNMutableNotificationContent()
                      print(users.name ?? "")
-                     content.title = "Item is about to expire!"
-                     content.subtitle = "\(users.name ?? "")! your \(product.name ?? "") is gonna expire, better use it soon!"
+                     content.title = "Item Expired!"
+                     content.subtitle = "\(users.name ?? "")! your \(product.name ?? "") has expired!"
                      content.sound = UNNotificationSound.default
                      
                      let dateComponent = Calendar.current.dateComponents([.month, .day, .hour], from: expiryDate)
@@ -285,6 +285,7 @@ struct AddItemModalView: View {
                     catch {
                         print(error.localizedDescription)
                     }
+                    
                     
                 } label: {
                     ZStack {
