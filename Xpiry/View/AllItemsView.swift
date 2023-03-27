@@ -326,6 +326,7 @@ struct AllItemsView: View {
             .ignoresSafeArea()
             .preferredColorScheme(.light)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .background(Color(red: 252/255, green: 250/255, blue: 250/255))
     }
     

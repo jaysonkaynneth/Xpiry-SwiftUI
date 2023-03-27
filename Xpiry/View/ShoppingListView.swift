@@ -18,7 +18,6 @@ struct ShoppingListView: View {
     @State private var showAlert = false
     
     var body: some View {
-        
         VStack {
             ZStack {
                 Rectangle()
